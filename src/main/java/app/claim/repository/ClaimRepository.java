@@ -10,5 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface ClaimRepository extends JpaRepository<Claim, UUID> {
-    List<Claim> findAllByUser(User user);
+
+    List<Claim> findAllByUserAndDeletedFalse(User user);
 }

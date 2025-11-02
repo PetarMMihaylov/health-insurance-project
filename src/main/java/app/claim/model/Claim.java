@@ -43,6 +43,9 @@ public class Claim {
     @Column(nullable = false)
     private LocalDateTime updatedOn;
 
+    @Column(nullable = false)
+    private boolean deleted;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

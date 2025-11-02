@@ -7,15 +7,15 @@ import app.user.service.UserService;
 import app.web.dto.ClaimSubmissionRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Controller
@@ -57,6 +57,18 @@ public class ClaimController {
         return modelAndView;
     }
 
+    @GetMapping("/{id}")
+    public ModelAndView getClaimDetails(@PathVariable UUID id, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        User user = userService.getById(authenticationMetadata.getUserId());
+        Claim claim = claimService.getByIdForUser(id, user);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("claim-details");
+        modelAndView.addObject("claim", claim);
+
+        return modelAndView;
+    }
+
     @PostMapping
     public ModelAndView submitClaim(@Valid ClaimSubmissionRequest claimSubmissionRequest, BindingResult bindingResult, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
@@ -69,8 +81,15 @@ public class ClaimController {
             return modelAndView;
         }
 
-        Claim claim = claimService.createClaim(claimSubmissionRequest, user);
+        claimService.createClaim(claimSubmissionRequest, user);
 
         return new ModelAndView("redirect:/claims");
+    }
+
+    @DeleteMapping("/{id}/deletion")
+    @PreAuthorize("hasRole('ADMIN') and hasAuthority('can_delete')")
+    public String deleteClaim(@PathVariable UUID id) {
+        claimService.softDelete(id);
+        return "redirect:/claims";
     }
 }

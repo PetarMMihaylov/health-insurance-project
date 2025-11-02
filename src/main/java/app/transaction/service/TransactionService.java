@@ -54,13 +54,11 @@ public class TransactionService {
     }
 
     public Transaction getById(UUID id) {
-        return transactionRepository.findById(id)
-                .orElseThrow(() -> new DomainException("No such transaction has been found"));
+        return transactionRepository.findById(id).orElseThrow(() -> new DomainException("No such transaction has been found"));
     }
 
     public Transaction getByIdForUser(UUID id, User user) {
-        Transaction transaction = transactionRepository.findById(id)
-                .orElseThrow(() -> new DomainException("Transaction not found"));
+        Transaction transaction = transactionRepository.findById(id).orElseThrow(() -> new DomainException("Transaction not found"));
 
         if (user.getRole() != UserRole.ADMIN) {
             if (!transaction.getTransactionOwner().equals(user) || transaction.isDeleted()) {
