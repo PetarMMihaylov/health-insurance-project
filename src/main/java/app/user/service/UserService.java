@@ -11,6 +11,8 @@ import app.user.repository.UserRepository;
 import app.web.dto.ProfileEditRequest;
 import app.web.dto.RegisterRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -42,6 +45,7 @@ public class UserService implements UserDetailsService {
         return new AuthenticationMetadata(user.getId(), username, user.getPassword(), user.getRole(), user.getPermission(), user.isEmployed());
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public void register(RegisterRequest registerRequest) {
 
         Optional<User> optionalUser = userRepository.findByUsername(registerRequest.getUsername());
@@ -100,6 +104,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id).orElseThrow(() -> new DomainException("User with [%s] id is not present.".formatted(id)));
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public void updateProfile(UUID id, ProfileEditRequest profileEditRequest) {
 
         User user = getById(id);
@@ -113,6 +118,7 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public void changeRole(UUID id) {
         User user = getById(id);
 
@@ -126,10 +132,16 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public void changeEmployment(UUID id) {
         User user = getById(id);
         user.setEmployed(!user.isEmployed());
         user.setUpdatedOn(LocalDateTime.now());
         userRepository.save(user);
+    }
+
+    @Cacheable("users")
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 }

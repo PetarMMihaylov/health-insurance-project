@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -23,6 +24,20 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView getUsers() {
+
+        List<User> users = userService.getAllUsers();
+
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.setViewName("users");
+        modelAndView.addObject("users", users);
+
+        return modelAndView;
     }
 
     @GetMapping("/{id}/profile")
