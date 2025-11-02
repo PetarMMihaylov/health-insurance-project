@@ -109,7 +109,7 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @PatchMapping("/{id}/status")
+    @PatchMapping("/{id}/employment")
     @PreAuthorize("hasRole('ADMIN')")
     public String changeUserEmployment(@PathVariable UUID id) {
         userService.changeEmployment(id);
