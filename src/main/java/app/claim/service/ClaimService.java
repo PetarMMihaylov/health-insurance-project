@@ -3,11 +3,13 @@ import app.claim.model.Claim;
 import app.claim.model.ClaimStatus;
 import app.claim.repository.ClaimRepository;
 import app.user.model.User;
+import app.user.model.UserRole;
 import app.web.dto.ClaimSubmissionRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ClaimService {
@@ -33,5 +35,16 @@ public class ClaimService {
                 .build();
 
         return claimRepository.save(claim);
+    }
+
+    public List<Claim> getClaims(User user) {
+        List <Claim> allClaims;
+        if (user.getRole() == UserRole.ADMIN) {
+            allClaims = claimRepository.findAll();
+        } else {
+            allClaims = claimRepository.findAllByUser(user);
+        }
+
+        return allClaims;
     }
 }

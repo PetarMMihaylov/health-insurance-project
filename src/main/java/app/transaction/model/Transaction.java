@@ -1,6 +1,6 @@
 package app.transaction.model;
 
-import app.claim.model.Claim;
+import app.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,11 +30,11 @@ public class Transaction {
     @Column(nullable = false)
     private BigDecimal paidAmount;
 
-    @Column(nullable = false)
-    private String paidUser;
-
     private String details;
 
     @Column(nullable = false)
     private LocalDateTime createdOn;
+
+    @ManyToOne(optional = false)
+    private User transactionOwner;
 }

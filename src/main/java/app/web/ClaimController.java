@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 
 @Controller
 @RequestMapping("/claims")
@@ -29,6 +31,20 @@ public class ClaimController {
     }
 
     @GetMapping
+    public ModelAndView getAllClaimsPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+
+        User user = userService.getById(authenticationMetadata.getUserId());
+        List<Claim> allClaims = claimService.getClaims(user);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("claims");
+        modelAndView.addObject("user", user);
+        modelAndView.addObject("allClaims", allClaims);
+
+        return modelAndView;
+    }
+
+    @GetMapping("/new-claim")
     public ModelAndView getNewClaimPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
         User user = userService.getById(authenticationMetadata.getUserId());

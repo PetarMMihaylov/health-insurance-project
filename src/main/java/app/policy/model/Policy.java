@@ -38,5 +38,8 @@ public class Policy {
     private BigDecimal limitForDentalService;
 
     @Column(nullable = false)
+    private BigDecimal policyPrice;
+
+    @Column(nullable = false)
     private LocalDateTime createdOn;
 }
