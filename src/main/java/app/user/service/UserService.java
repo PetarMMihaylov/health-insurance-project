@@ -5,11 +5,16 @@ import app.policy.model.Policy;
 import app.policy.model.PolicyType;
 import app.policy.service.PolicyService;
 import app.security.AuthenticationMetadata;
+import app.transaction.model.Transaction;
+import app.transaction.model.TransactionStatus;
+import app.transaction.service.TransactionService;
 import app.user.model.User;
 import app.user.model.UserRole;
 import app.user.repository.UserRepository;
+import app.web.dto.AccountBalanceRequest;
 import app.web.dto.ProfileEditRequest;
 import app.web.dto.RegisterRequest;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -32,11 +37,13 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final PolicyService policyService;
+    private final TransactionService transactionService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, PolicyService policyService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, PolicyService policyService, TransactionService transactionService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.policyService = policyService;
+        this.transactionService = transactionService;
     }
 
     @Override
@@ -143,5 +150,15 @@ public class UserService implements UserDetailsService {
     @Cacheable("users")
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Transactional
+    @CacheEvict(value = "users", allEntries = true)
+    public void updateBalance(UUID id, AccountBalanceRequest accountBalanceRequest) {
+        User user = getById(id);
+        BigDecimal amountToIncrease = accountBalanceRequest.getAddedAmount();
+        user.setAccountBalance(user.getAccountBalance().add(amountToIncrease));
+        userRepository.save(user);
+        transactionService.create(user, amountToIncrease, TransactionStatus.COMPLETED);
     }
 }

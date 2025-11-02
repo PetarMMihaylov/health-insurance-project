@@ -2,6 +2,7 @@ package app.transaction.model;
 
 import app.user.model.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -24,16 +25,21 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     private TransactionStatus transactionStatus;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true, length = 8)
+    @Size(min = 8, max = 8)
     private String referenceNumber;
 
     @Column(nullable = false)
     private BigDecimal paidAmount;
 
-    private String details;
-
     @Column(nullable = false)
     private LocalDateTime createdOn;
+
+    @Column(nullable = false)
+    private LocalDateTime updatedOn;
+
+    @Column(nullable = false)
+    private boolean deleted;
 
     @ManyToOne(optional = false)
     private User transactionOwner;
