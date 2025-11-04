@@ -44,5 +44,10 @@ public class PolicyController {
         return modelAndView;
     }
 
-
+    @PatchMapping("/{id}/user-policy")
+    public String changeUserPolicy(@PathVariable UUID id, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        User user = userService.getById(authenticationMetadata.getUserId());
+        userService.changePolicy(id, user);
+        return "redirect:/policy";
+    }
 }
