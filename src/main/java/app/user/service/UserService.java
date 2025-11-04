@@ -158,7 +158,25 @@ public class UserService implements UserDetailsService {
         User user = getById(id);
         BigDecimal amountToIncrease = accountBalanceRequest.getAddedAmount();
         user.setAccountBalance(user.getAccountBalance().add(amountToIncrease));
+        user.setUpdatedOn(LocalDateTime.now());
         userRepository.save(user);
         transactionService.create(user, amountToIncrease, TransactionStatus.COMPLETED);
+    }
+
+    @CacheEvict(value = "users", allEntries = true)
+    public void changePolicy(UUID id, User user) {
+        Policy policy = policyService.getById(id);
+
+        if (user.getAccountBalance().compareTo(policy.getPolicyPrice()) >= 0) {
+            user.setAccountBalance(user.getAccountBalance().subtract(policy.getPolicyPrice()));
+            user.setPolicy(policy);
+            user.setUpdatedOn(LocalDateTime.now());
+            userRepository.save(user);
+            transactionService.create(user, policy.getPolicyPrice(), TransactionStatus.COMPLETED);
+            log.info("User [{}] changed policy to [{}].", user.getUsername(), policy.getPolicyType().getDisplayName());
+        } else {
+            transactionService.create(user, policy.getPolicyPrice(), TransactionStatus.FAILED);
+            log.info("User [{}] unsuccessfully tried to change policy to [{}].", user.getUsername(), policy.getPolicyType().getDisplayName());
+        }
     }
 }
