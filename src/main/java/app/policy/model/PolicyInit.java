@@ -48,6 +48,7 @@ public class PolicyInit implements ApplicationRunner {
                             .limitForDentalService(LIMIT_FOR_DENTAL_SERVICE_COMFORT)
                             .policyPrice(POLICY_PRICE_COMFORT)
                             .createdOn(LocalDateTime.now())
+                            .updatedOn(LocalDateTime.now())
                             .build(),
                     Policy.builder()
                             .policyType(PolicyType.STANDARD)
@@ -57,6 +58,7 @@ public class PolicyInit implements ApplicationRunner {
                             .limitForDentalService(LIMIT_FOR_DENTAL_SERVICE_STANDARD)
                             .policyPrice(POLICY_PRICE_STANDARD)
                             .createdOn(LocalDateTime.now())
+                            .updatedOn(LocalDateTime.now())
                             .build(),
                     Policy.builder()
                             .policyType(PolicyType.LUX)
@@ -66,6 +68,7 @@ public class PolicyInit implements ApplicationRunner {
                             .limitForDentalService(LIMIT_FOR_DENTAL_SERVICE_LUX)
                             .policyPrice(POLICY_PRICE_LUX)
                             .createdOn(LocalDateTime.now())
+                            .updatedOn(LocalDateTime.now())
                             .build()));
         }
     }
