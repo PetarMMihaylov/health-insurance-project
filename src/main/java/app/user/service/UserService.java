@@ -178,4 +178,8 @@ public class UserService implements UserDetailsService {
             log.info("User [{}] unsuccessfully tried to change policy to [{}].", user.getUsername(), policy.getPolicyType().getDisplayName());
         }
     }
+
+    public void persistUser(User user) {
+        userRepository.save(user);
+    }
 }

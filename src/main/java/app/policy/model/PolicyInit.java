@@ -13,12 +13,12 @@ import java.util.List;
 @Component
 public class PolicyInit implements ApplicationRunner {
 
-    private static final BigDecimal LIMIT_FOR_MEDICATIONS_COMFORT = BigDecimal.valueOf(200);
-    private static final BigDecimal LIMIT_FOR_HOSPITAL_TREATMENT_COMFORT = BigDecimal.valueOf(1000);
+    private static final BigDecimal LIMIT_FOR_MEDICATIONS_COMFORT = BigDecimal.valueOf(50);
+    private static final BigDecimal LIMIT_FOR_HOSPITAL_TREATMENT_COMFORT = BigDecimal.valueOf(500);
     private static final BigDecimal LIMIT_FOR_SURGERY_COMFORT = BigDecimal.valueOf(0);
     private static final BigDecimal LIMIT_FOR_DENTAL_SERVICE_COMFORT = BigDecimal.valueOf(0);
-    private static final BigDecimal LIMIT_FOR_MEDICATIONS_STANDARD = BigDecimal.valueOf(300);
-    private static final BigDecimal LIMIT_FOR_HOSPITAL_TREATMENT_STANDARD = BigDecimal.valueOf(2000);
+    private static final BigDecimal LIMIT_FOR_MEDICATIONS_STANDARD = BigDecimal.valueOf(100);
+    private static final BigDecimal LIMIT_FOR_HOSPITAL_TREATMENT_STANDARD = BigDecimal.valueOf(1000);
     private static final BigDecimal LIMIT_FOR_SURGERY_STANDARD = BigDecimal.valueOf(1500);
     private static final BigDecimal LIMIT_FOR_DENTAL_SERVICE_STANDARD = BigDecimal.valueOf(500);
     private static final BigDecimal LIMIT_FOR_MEDICATIONS_LUX = BigDecimal.valueOf(500);
