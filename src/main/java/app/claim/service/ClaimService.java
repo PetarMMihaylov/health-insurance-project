@@ -7,6 +7,8 @@ import app.transaction.model.Transaction;
 import app.user.model.User;
 import app.user.model.UserRole;
 import app.web.dto.ClaimSubmissionRequest;
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 public class ClaimService {
 
@@ -74,5 +77,23 @@ public class ClaimService {
         }
 
         return claim;
+    }
+
+    @Transactional
+    public void moveOpenClaimsToReview() {
+        List<Claim> openClaims = claimRepository.findAllByClaimStatus(ClaimStatus.OPEN);
+
+        if (openClaims.isEmpty()) {
+            return;
+        }
+
+        openClaims.forEach(claim -> {
+            claim.setClaimStatus(ClaimStatus.FOR_REVIEW);
+            claim.setUpdatedOn(LocalDateTime.now());
+        });
+
+        claimRepository.saveAll(openClaims);
+
+        log.info("Scheduler: Moved {} claims from OPEN to FOR_REVIEW", openClaims.size());
     }
 }

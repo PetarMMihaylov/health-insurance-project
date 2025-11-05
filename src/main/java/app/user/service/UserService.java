@@ -5,7 +5,6 @@ import app.policy.model.Policy;
 import app.policy.model.PolicyType;
 import app.policy.service.PolicyService;
 import app.security.AuthenticationMetadata;
-import app.transaction.model.Transaction;
 import app.transaction.model.TransactionStatus;
 import app.transaction.service.TransactionService;
 import app.user.model.User;
