@@ -1,6 +1,7 @@
 package app.policy.service;
 
 import app.exception.DomainException;
+import app.exception.PolicyNotFoundException;
 import app.policy.model.Policy;
 import app.policy.model.PolicyType;
 import app.policy.repository.PolicyRepository;
@@ -32,7 +33,7 @@ public class PolicyService {
     }
 
     public Policy getById(UUID id) {
-        return policyRepository.findById(id).orElseThrow(() -> new DomainException("Policy with [%s] id is not present.".formatted(id)));
+        return policyRepository.findById(id).orElseThrow(() -> new PolicyNotFoundException("Policy with [%s] id is not present.".formatted(id)));
     }
 
     public void updatePolicyLimits(Policy policy, PolicyLimitsChangeRequest policyLimitsChangeRequest, User admin) {

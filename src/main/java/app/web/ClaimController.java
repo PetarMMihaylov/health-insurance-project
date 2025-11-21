@@ -69,7 +69,7 @@ public class ClaimController {
         return modelAndView;
     }
 
-    @PostMapping
+    @PostMapping("/new-claim")
     public ModelAndView submitClaim(@Valid ClaimSubmissionRequest claimSubmissionRequest, BindingResult bindingResult, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
         User user = userService.getById(authenticationMetadata.getUserId());

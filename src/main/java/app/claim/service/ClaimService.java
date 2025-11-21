@@ -3,6 +3,7 @@ import app.claim.model.Claim;
 import app.claim.model.ClaimStatus;
 import app.claim.model.ClaimType;
 import app.claim.repository.ClaimRepository;
+import app.exception.ClaimNotFoundException;
 import app.exception.DomainException;
 import app.policy.model.Policy;
 import app.transaction.model.Transaction;
@@ -18,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,6 +58,10 @@ public class ClaimService {
         return claimRepository.save(claim);
     }
 
+    public List<Claim> getClaimsCreatedByUserForPeriod(User user, LocalDate startDate, LocalDate endDate) {
+        return claimRepository.findAllByUserAndDeletedFalseAndCreatedOnBetween(user, startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX));
+    }
+
     public List<Claim> getClaims(User user) {
         List <Claim> allClaims;
         if (user.getRole() == UserRole.ADMIN) {
@@ -74,12 +81,12 @@ public class ClaimService {
     }
 
     public Claim getById(UUID id) {
-        return claimRepository.findById(id).orElseThrow(() -> new DomainException("No such claim has been found"));
+        return claimRepository.findById(id).orElseThrow(() -> new ClaimNotFoundException("No such claim has been found"));
     }
 
 
     public Claim getByIdForUser(UUID id, User user) {
-        Claim claim = claimRepository.findById(id).orElseThrow(() -> new DomainException("Claim not found"));
+        Claim claim = getById(id);
 
         if (user.getRole() != UserRole.ADMIN) {
             if (!claim.getUser().equals(user) || claim.isDeleted()) {

@@ -1,6 +1,8 @@
 package app.transaction.service;
 
+import app.claim.model.Claim;
 import app.exception.DomainException;
+import app.exception.TransactionNotFoundException;
 import app.transaction.model.Transaction;
 import app.transaction.model.TransactionStatus;
 import app.transaction.repository.TransactionRepository;
@@ -9,7 +11,9 @@ import app.user.model.UserRole;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,6 +41,17 @@ public class TransactionService {
         return transactionRepository.save(transaction);
     }
 
+    public List<Transaction> getTransactionsCreatedByUserForPeriod(User user, LocalDate startDate, LocalDate endDate) {
+
+        List<Transaction> transactions = transactionRepository.findAllByUserAndDeletedFalseAndCreatedOnBetween(user, startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX));
+
+        if (transactions.isEmpty()) {
+            throw new TransactionNotFoundException("No transactions found for user with id " + user.getId());
+        }
+
+        return transactions;
+    }
+
     public List<Transaction> getAllTransactions(User user) {
 
         List<Transaction> transactions;
@@ -47,18 +62,18 @@ public class TransactionService {
         }
 
         if (transactions.isEmpty()) {
-            throw new DomainException("No transactions found for user with id " + user.getId());
+            throw new TransactionNotFoundException("No transactions found for user with id " + user.getId());
         }
 
         return transactions;
     }
 
     public Transaction getById(UUID id) {
-        return transactionRepository.findById(id).orElseThrow(() -> new DomainException("No such transaction has been found"));
+        return transactionRepository.findById(id).orElseThrow(() -> new TransactionNotFoundException("No such transaction has been found"));
     }
 
     public Transaction getByIdForUser(UUID id, User user) {
-        Transaction transaction = transactionRepository.findById(id).orElseThrow(() -> new DomainException("Transaction not found"));
+        Transaction transaction = transactionRepository.findById(id).orElseThrow(() -> new TransactionNotFoundException("Transaction not found"));
 
         if (user.getRole() != UserRole.ADMIN) {
             if (!transaction.getTransactionOwner().equals(user) || transaction.isDeleted()) {

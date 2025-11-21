@@ -1,6 +1,8 @@
 package app.user.service;
 
-import app.exception.DomainException;
+import app.exception.InvalidCompanyException;
+import app.exception.UserAlreadyFoundException;
+import app.exception.UserNotFoundException;
 import app.policy.model.Policy;
 import app.policy.model.PolicyType;
 import app.policy.service.PolicyService;
@@ -46,8 +48,8 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new DomainException("Username not found"));
+    public UserDetails loadUserByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
         return new AuthenticationMetadata(user.getId(), username, user.getPassword(), user.getRole(), user.getPermission(), user.isEmployed());
     }
 
@@ -56,7 +58,7 @@ public class UserService implements UserDetailsService {
 
         Optional<User> optionalUser = userRepository.findByUsername(registerRequest.getUsername());
         if (optionalUser.isPresent()) {
-            throw new DomainException("User with username [%s] is already present.".formatted(registerRequest.getUsername()));
+            throw new UserAlreadyFoundException("User with username [%s] is already present.".formatted(registerRequest.getUsername()));
         }
 
         Policy correctPolicy;
@@ -80,7 +82,7 @@ public class UserService implements UserDetailsService {
             role = UserRole.ADMIN;
             permission = "can_delete";
         } else {
-            throw new DomainException("Invalid company name: " + registerRequest.getCompany().getDisplayName());
+            throw new InvalidCompanyException("Invalid company name: " + registerRequest.getCompany().getDisplayName());
         }
 
         User user = User.builder()
@@ -107,7 +109,7 @@ public class UserService implements UserDetailsService {
 
     public User getById(UUID id) {
 
-        return userRepository.findById(id).orElseThrow(() -> new DomainException("User with [%s] id is not present.".formatted(id)));
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User with [%s] id is not present.".formatted(id)));
     }
 
     @CacheEvict(value = "users", allEntries = true)

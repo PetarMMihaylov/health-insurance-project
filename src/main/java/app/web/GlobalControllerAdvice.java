@@ -1,0 +1,69 @@
+package app.web;
+
+import app.exception.*;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+@ControllerAdvice
+public class GlobalControllerAdvice {
+
+    @ExceptionHandler(SecurityException.class)
+    public String handleSecurityException(SecurityException exception, RedirectAttributes redirectAttributes) {
+
+        redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
+        return "redirect:/reports";
+    }
+
+    @ExceptionHandler(ClaimNotFoundException.class)
+    public String handleClaimNotFoundException(ClaimNotFoundException exception, RedirectAttributes redirectAttributes) {
+
+        redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
+        return "redirect:/claims";
+    }
+
+    @ExceptionHandler(InvalidCompanyException.class)
+    public String handleInvalidCompanyException(InvalidCompanyException exception, RedirectAttributes redirectAttributes) {
+
+        redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
+        return "redirect:/register";
+    }
+
+    @ExceptionHandler(PolicyNotFoundException.class)
+    public String handlePolicyNotFoundException(PolicyNotFoundException exception, RedirectAttributes redirectAttributes) {
+
+        redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
+        return "redirect:/policy";
+    }
+
+    @ExceptionHandler(TransactionNotFoundException.class)
+    public String handleTransactionNotFoundException(TransactionNotFoundException exception, RedirectAttributes redirectAttributes) {
+
+        redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
+        return "redirect:/transactions";
+    }
+
+    @ExceptionHandler(UserAlreadyFoundException.class)
+    public String handleUserAlreadyFoundException(UserAlreadyFoundException exception, RedirectAttributes redirectAttributes) {
+
+        redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
+        return "redirect:/register";
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ModelAndView handleUserNotFoundException(UserNotFoundException exception) {
+
+        ModelAndView modelAndView = new ModelAndView("not-found");
+
+        return modelAndView;
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ModelAndView handleOtherExceptions(Exception exception) {
+
+        ModelAndView modelAndView = new ModelAndView("internal-server-error");
+
+        return modelAndView;
+    }
+}
