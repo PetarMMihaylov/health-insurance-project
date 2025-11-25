@@ -45,6 +45,13 @@ class PolicyControllerMVCTest {
         return Policy.builder()
                 .id(UUID.randomUUID())
                 .policyType(PolicyType.STANDARD)
+                .limitForMedications(BigDecimal.valueOf(100))
+                .limitForHospitalTreatment(BigDecimal.valueOf(200))
+                .limitForSurgery(BigDecimal.valueOf(300))
+                .limitForDentalService(BigDecimal.valueOf(50))
+                .policyPrice(BigDecimal.valueOf(500))
+                .createdOn(LocalDateTime.now())
+                .updatedOn(LocalDateTime.now())
                 .build();
     }
 
