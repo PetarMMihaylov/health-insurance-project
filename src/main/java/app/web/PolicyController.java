@@ -59,7 +59,7 @@ public class PolicyController {
 
         PolicyLimitsChangeRequest policyLimitsChangeRequest = RequestToPolicyMapper.fromPolicyToEditRequest(policy);
 
-        ModelAndView modelAndView = new ModelAndView("policy_limits_form");
+        ModelAndView modelAndView = new ModelAndView("policy-limits-form");
         modelAndView.addObject("policy", policy);
         modelAndView.addObject("policyLimitsChangeRequest", policyLimitsChangeRequest);
         return modelAndView;
@@ -72,7 +72,7 @@ public class PolicyController {
         Policy policy = policyService.getById(id);
 
         if (bindingResult.hasErrors()) {
-            ModelAndView modelAndView = new ModelAndView("policy_limits_form");
+            ModelAndView modelAndView = new ModelAndView("policy-limits-form");
             modelAndView.addObject("policy", policy);
             modelAndView.addObject("policyLimitsChangeRequest", policyLimitsChangeRequest);
             return modelAndView;

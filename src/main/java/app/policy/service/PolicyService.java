@@ -1,6 +1,5 @@
 package app.policy.service;
 
-import app.exception.DomainException;
 import app.exception.PolicyNotFoundException;
 import app.policy.model.Policy;
 import app.policy.model.PolicyType;

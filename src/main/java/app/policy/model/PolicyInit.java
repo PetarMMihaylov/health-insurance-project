@@ -35,7 +35,6 @@ public class PolicyInit implements ApplicationRunner {
         this.policyRepository = policyRepository;
     }
 
-
     @Override
     public void run(ApplicationArguments args) throws Exception {
         if (policyRepository.count() == 0) {

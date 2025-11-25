@@ -1,6 +1,5 @@
 package app.transaction.service;
 
-import app.claim.model.Claim;
 import app.exception.DomainException;
 import app.exception.TransactionNotFoundException;
 import app.transaction.model.Transaction;
