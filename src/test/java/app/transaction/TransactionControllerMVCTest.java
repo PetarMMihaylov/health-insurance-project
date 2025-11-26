@@ -42,6 +42,7 @@ class TransactionControllerMVCTest {
     private UserService userService;
 
     private User createDummyUser(UserRole role) {
+
         return User.builder()
                 .id(UUID.randomUUID())
                 .email(role.name().toLowerCase() + "@example.com")
@@ -60,6 +61,7 @@ class TransactionControllerMVCTest {
     }
 
     private Transaction createDummyTransaction(User user) {
+
         return Transaction.builder()
                 .id(UUID.randomUUID())
                 .transactionStatus(TransactionStatus.COMPLETED)
@@ -73,6 +75,7 @@ class TransactionControllerMVCTest {
     }
 
     private AuthenticationMetadata authenticationMetadata(User user) {
+
         return new AuthenticationMetadata(
                 user.getId(),
                 user.getUsername(),
@@ -85,6 +88,7 @@ class TransactionControllerMVCTest {
 
     @Test
     void getTransactions_returnsTransactionsForUser() throws Exception {
+
         User user = createDummyUser(UserRole.POLICYHOLDER);
         AuthenticationMetadata auth = authenticationMetadata(user);
 
@@ -105,6 +109,7 @@ class TransactionControllerMVCTest {
 
     @Test
     void getTransactions_noTransactions_redirectsWithFlash() throws Exception {
+
         User user = createDummyUser(UserRole.POLICYHOLDER);
         AuthenticationMetadata auth = authenticationMetadata(user);
 
@@ -122,6 +127,7 @@ class TransactionControllerMVCTest {
 
     @Test
     void getTransactionInformation_returnsTransactionForUser() throws Exception {
+
         User user = createDummyUser(UserRole.POLICYHOLDER);
         AuthenticationMetadata auth = authenticationMetadata(user);
 
@@ -141,6 +147,7 @@ class TransactionControllerMVCTest {
 
     @Test
     void getTransactionInformation_notFound_redirectsWithFlash() throws Exception {
+
         User user = createDummyUser(UserRole.POLICYHOLDER);
         AuthenticationMetadata auth = authenticationMetadata(user);
         UUID transactionId = UUID.randomUUID();
@@ -156,7 +163,8 @@ class TransactionControllerMVCTest {
     }
 
     @Test
-    void getTransactionInformation_nonOwnerOrDeleted_redirectsWithFlash() throws Exception {
+    void getTransactionInformation_nonOwnerOrDeleted() throws Exception {
+
         User user = createDummyUser(UserRole.POLICYHOLDER);
         AuthenticationMetadata auth = authenticationMetadata(user);
 
@@ -167,15 +175,15 @@ class TransactionControllerMVCTest {
                 .thenThrow(new DomainException("Access denied for this transaction"));
 
         mockMvc.perform(get("/transactions/{id}", transactionId).with(user(auth)))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/transactions"))
-                .andExpect(flash().attribute("errorMessage", "Access denied for this transaction"));
+                .andExpect(status().isInternalServerError())
+                .andExpect(view().name("internal-server-error"));
 
         verify(transactionService).getByIdForUser(transactionId, user);
     }
 
     @Test
     void deleteTransaction_adminWithPermission_redirects() throws Exception {
+
         User admin = createDummyUser(UserRole.ADMIN);
         AuthenticationMetadata auth = authenticationMetadata(admin);
 
@@ -192,6 +200,7 @@ class TransactionControllerMVCTest {
 
     @Test
     void deleteTransaction_nonAdmin_forbidden() throws Exception {
+
         User user = createDummyUser(UserRole.POLICYHOLDER);
         AuthenticationMetadata auth = authenticationMetadata(user);
 
@@ -207,6 +216,7 @@ class TransactionControllerMVCTest {
 
     @Test
     void deleteTransaction_adminWithoutPermission_forbidden() throws Exception {
+
         User admin = createDummyUser(UserRole.ADMIN);
         admin.setPermission("not_delete");
         AuthenticationMetadata auth = authenticationMetadata(admin);

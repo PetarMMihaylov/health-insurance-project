@@ -1,4 +1,5 @@
 package app.claim.service;
+
 import app.claim.model.Claim;
 import app.claim.model.ClaimStatus;
 import app.claim.model.ClaimType;
@@ -6,7 +7,6 @@ import app.claim.repository.ClaimRepository;
 import app.exception.ClaimNotFoundException;
 import app.exception.DomainException;
 import app.policy.model.Policy;
-import app.transaction.model.Transaction;
 import app.transaction.model.TransactionStatus;
 import app.transaction.service.TransactionService;
 import app.user.model.User;

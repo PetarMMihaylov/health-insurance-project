@@ -1,6 +1,5 @@
 package app.scheduler;
 
-import app.claim.model.ClaimStatus;
 import app.claim.service.ClaimService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,5 @@
 package app.claim.model;
 
-import app.transaction.model.Transaction;
 import app.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
