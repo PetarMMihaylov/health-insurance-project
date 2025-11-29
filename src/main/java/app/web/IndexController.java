@@ -73,7 +73,6 @@ public class IndexController {
         User user = userService.getById(authenticationMetadata.getUserId());
 
         ModelAndView modelAndView = new ModelAndView();
-
         modelAndView.setViewName("home");
         modelAndView.addObject("user", user);
 

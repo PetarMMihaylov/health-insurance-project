@@ -5,7 +5,6 @@ import app.user.model.User;
 import app.user.service.UserService;
 import app.utility.RequestToUserMapper;
 import app.web.dto.AccountBalanceRequest;
-import app.web.dto.ClaimSubmissionRequest;
 import app.web.dto.ProfileEditRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

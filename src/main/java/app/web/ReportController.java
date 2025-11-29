@@ -1,6 +1,5 @@
 package app.web;
 
-import app.report.client.dto.CreateSummaryRequest;
 import app.report.client.dto.Summary;
 import app.report.service.ReportService;
 import app.security.AuthenticationMetadata;
