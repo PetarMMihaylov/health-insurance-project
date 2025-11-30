@@ -6,6 +6,7 @@ import app.claim.model.ClaimType;
 import app.claim.repository.ClaimRepository;
 import app.policy.model.Policy;
 import app.policy.model.PolicyType;
+import app.policy.repository.PolicyRepository;
 import app.transaction.model.Transaction;
 import app.transaction.model.TransactionStatus;
 import app.transaction.repository.TransactionRepository;
@@ -39,6 +40,9 @@ class ReportServiceITest {
     private ClaimRepository claimRepository;
 
     @Autowired
+    private PolicyRepository policyRepository;
+
+    @Autowired
     private TransactionRepository transactionRepository;
 
     @Autowired
@@ -57,6 +61,8 @@ class ReportServiceITest {
                 .createdOn(LocalDateTime.now())
                 .updatedOn(LocalDateTime.now())
                 .build();
+
+        policyRepository.save(policy);
 
         User user = User.builder()
                 .email("john@example.com")

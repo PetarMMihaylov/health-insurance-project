@@ -103,7 +103,7 @@ class ReportServiceUTest {
         UUID reportId = UUID.randomUUID();
         Summary summary = new Summary(reportId, userId, null, null, 1, 1, null, 1, null);
         when(reportClient.getReportDetails(reportId)).thenReturn(ResponseEntity.ok(summary));
-        doNothing().when(reportClient).deleteReport(reportId);
+        when(reportClient.deleteReport(reportId)).thenReturn(ResponseEntity.ok().build());
 
         assertDoesNotThrow(() -> reportService.deleteReport(reportId, userId));
 

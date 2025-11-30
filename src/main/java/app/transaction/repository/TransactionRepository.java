@@ -14,5 +14,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
 
     List<Transaction> findAllByTransactionOwnerAndDeletedFalse(User user);
 
-    List<Transaction> findAllByUserAndDeletedFalseAndCreatedOnBetween(User user, LocalDateTime startDate, LocalDateTime endDate);
+    List<Transaction> findAllByTransactionOwnerAndDeletedFalseAndCreatedOnBetween(User user, LocalDateTime startDate, LocalDateTime endDate);
 }

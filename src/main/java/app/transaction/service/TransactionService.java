@@ -42,7 +42,7 @@ public class TransactionService {
 
     public List<Transaction> getTransactionsCreatedByUserForPeriod(User user, LocalDate startDate, LocalDate endDate) {
 
-        List<Transaction> transactions = transactionRepository.findAllByUserAndDeletedFalseAndCreatedOnBetween(user, startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX));
+        List<Transaction> transactions = transactionRepository.findAllByTransactionOwnerAndDeletedFalseAndCreatedOnBetween(user, startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX));
 
         if (transactions.isEmpty()) {
             throw new TransactionNotFoundException("No transactions found for user with id " + user.getId());

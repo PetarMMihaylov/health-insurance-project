@@ -185,7 +185,7 @@ class TransactionServiceUTest {
         Transaction t1 = createDummyTransaction(user);
         Transaction t2 = createDummyTransaction(user);
 
-        when(transactionRepository.findAllByUserAndDeletedFalseAndCreatedOnBetween(
+        when(transactionRepository.findAllByTransactionOwnerAndDeletedFalseAndCreatedOnBetween(
                 eq(user),
                 eq(start.atStartOfDay()),
                 eq(end.atTime(LocalTime.MAX))
@@ -198,7 +198,7 @@ class TransactionServiceUTest {
         assertTrue(result.contains(t2));
 
         verify(transactionRepository, times(1))
-                .findAllByUserAndDeletedFalseAndCreatedOnBetween(user, start.atStartOfDay(), end.atTime(LocalTime.MAX));
+                .findAllByTransactionOwnerAndDeletedFalseAndCreatedOnBetween(user, start.atStartOfDay(), end.atTime(LocalTime.MAX));
     }
 
     @Test
@@ -207,7 +207,7 @@ class TransactionServiceUTest {
         LocalDate start = LocalDate.now().minusDays(7);
         LocalDate end = LocalDate.now();
 
-        when(transactionRepository.findAllByUserAndDeletedFalseAndCreatedOnBetween(any(), any(), any()))
+        when(transactionRepository.findAllByTransactionOwnerAndDeletedFalseAndCreatedOnBetween(any(), any(), any()))
                 .thenReturn(List.of());
 
         TransactionNotFoundException ex = assertThrows(TransactionNotFoundException.class,
@@ -216,7 +216,7 @@ class TransactionServiceUTest {
         assertEquals("No transactions found for user with id " + user.getId(), ex.getMessage());
 
         verify(transactionRepository, times(1))
-                .findAllByUserAndDeletedFalseAndCreatedOnBetween(any(), any(), any());
+                .findAllByTransactionOwnerAndDeletedFalseAndCreatedOnBetween(any(), any(), any());
     }
 
     @Test
