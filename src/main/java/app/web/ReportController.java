@@ -53,11 +53,14 @@ public class ReportController {
     }
 
     @GetMapping("/new-report")
-    public ModelAndView getNewSummaryPage() {
+    public ModelAndView getNewSummaryPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+
+        User user = userService.getById(authenticationMetadata.getUserId());
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("create-report");
         modelAndView.addObject("createSummaryByDates", new CreateSummaryByDates());
+        modelAndView.addObject("user", user);
 
         return modelAndView;
     }
@@ -70,6 +73,7 @@ public class ReportController {
         if (bindingResult.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.setViewName("create-report");
+            modelAndView.addObject("user", user);
             return modelAndView;
         }
 

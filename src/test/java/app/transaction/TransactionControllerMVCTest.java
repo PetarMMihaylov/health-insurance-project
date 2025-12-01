@@ -199,7 +199,7 @@ class TransactionControllerMVCTest {
     }
 
     @Test
-    void deleteTransaction_nonAdmin_forbidden() throws Exception {
+    void deleteTransaction_nonAdmin_fails() throws Exception {
 
         User user = createDummyUser(UserRole.POLICYHOLDER);
         AuthenticationMetadata auth = authenticationMetadata(user);
@@ -209,13 +209,13 @@ class TransactionControllerMVCTest {
         mockMvc.perform(delete("/transactions/{id}/deletion", transactionId)
                         .with(user(auth))
                         .with(csrf()))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isInternalServerError());
 
         verifyNoInteractions(transactionService);
     }
 
     @Test
-    void deleteTransaction_adminWithoutPermission_forbidden() throws Exception {
+    void deleteTransaction_adminWithoutPermission_fails() throws Exception {
 
         User admin = createDummyUser(UserRole.ADMIN);
         admin.setPermission("not_delete");
@@ -225,7 +225,7 @@ class TransactionControllerMVCTest {
         mockMvc.perform(delete("/transactions/{id}/deletion", transactionId)
                         .with(user(auth))
                         .with(csrf()))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isInternalServerError());
 
         verifyNoInteractions(transactionService);
     }

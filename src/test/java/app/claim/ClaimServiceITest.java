@@ -5,6 +5,7 @@ import app.claim.repository.ClaimRepository;
 import app.claim.service.ClaimService;
 import app.policy.model.Policy;
 import app.policy.model.PolicyType;
+import app.policy.repository.PolicyRepository;
 import app.user.model.*;
 import app.user.repository.UserRepository;
 import app.user.service.UserService;
@@ -40,6 +41,9 @@ class ClaimServiceITest {
     private UserService userService;
 
     @Autowired
+    private PolicyRepository policyRepository;
+
+    @Autowired
     private TransactionService transactionService;
 
     private User createUserWithPolicy() {
@@ -54,12 +58,17 @@ class ClaimServiceITest {
                 .updatedOn(LocalDateTime.now())
                 .build();
 
+        policyRepository.save(policy);
+
         User user = User.builder()
                 .username("john")
+                .password("Password1@")
                 .email("john@test.com")
                 .firstName("John")
                 .lastName("Doe")
                 .role(UserRole.POLICYHOLDER)
+                .permission("not_delete")
+                .companyName(CompanyName.NEURO_NEST)
                 .accountBalance(BigDecimal.valueOf(500))
                 .policy(policy)
                 .createdOn(LocalDateTime.now())

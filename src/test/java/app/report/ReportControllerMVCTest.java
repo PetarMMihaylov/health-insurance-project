@@ -94,7 +94,10 @@ class ReportControllerMVCTest {
     @Test
     void getNewSummaryPage_ShouldReturnCreateReportView() throws Exception {
 
-        mockMvc.perform(get("/reports/new-report"))
+        UUID userId = UUID.randomUUID();
+        AuthenticationMetadata auth = new AuthenticationMetadata(userId, "john", "Password@1", UserRole.POLICYHOLDER, "not_delete", true);
+
+        mockMvc.perform(get("/reports/new-report").with(user(auth)))
                 .andExpect(status().isOk())
                 .andExpect(view().name("create-report"))
                 .andExpect(model().attributeExists("createSummaryByDates"));
@@ -159,6 +162,6 @@ class ReportControllerMVCTest {
     void deleteReport_NoAuth_ShouldRedirect() throws Exception {
 
         mockMvc.perform(delete("/reports/" + UUID.randomUUID()))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isForbidden());
     }
 }

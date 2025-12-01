@@ -75,7 +75,7 @@ class ClaimServiceUTest {
                 .claimStatus(ClaimStatus.OPEN)
                 .requestedAmount(BigDecimal.TEN)
                 .attachedDocument("medication.pdf")
-                .description("test desc")
+                .description("desc")
                 .createdOn(LocalDateTime.now())
                 .updatedOn(LocalDateTime.now())
                 .deleted(deleted)
@@ -321,5 +321,18 @@ class ClaimServiceUTest {
         assertNotNull(result);
         assertTrue(result.isEmpty());
         verify(claimRepository).findAllByClaimStatus(ClaimStatus.OPEN);
+    }
+
+    @Test
+    void rejectClaim_ShouldSetStatusToRejectedAndUpdateTimestamp() {
+
+        User user = buildUser(UserRole.POLICYHOLDER);
+        Claim claim = buildClaim(user, false);
+        claim.setClaimStatus(ClaimStatus.FOR_REVIEW);
+
+        claimService.rejectClaim(claim, LocalDateTime.now());
+
+        assertEquals(ClaimStatus.REJECTED, claim.getClaimStatus(),
+                "Claim status should be set to REJECTED");
     }
 }

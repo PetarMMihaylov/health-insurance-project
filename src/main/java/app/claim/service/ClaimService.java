@@ -175,7 +175,7 @@ public class ClaimService {
         log.info("Scheduler: Automatically evaluated {} claims", claimsForEvaluation.size());
     }
 
-    private void rejectClaim(Claim claim, LocalDateTime now) {
+    public void rejectClaim(Claim claim, LocalDateTime now) {
         claim.setClaimStatus(ClaimStatus.REJECTED);
         claim.setUpdatedOn(now);
     }

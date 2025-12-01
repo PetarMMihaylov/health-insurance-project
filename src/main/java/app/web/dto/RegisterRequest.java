@@ -2,10 +2,7 @@ package app.web.dto;
 
 
 import app.user.model.CompanyName;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Builder
@@ -36,6 +33,6 @@ public class RegisterRequest {
     @Size(min = 3, max = 18)
     private String lastName;
 
-    @NotBlank
+    @NotNull(message = "Company must be selected.")
     private CompanyName company;
 }

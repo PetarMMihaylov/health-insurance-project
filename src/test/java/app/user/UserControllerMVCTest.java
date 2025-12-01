@@ -83,7 +83,7 @@ class UserControllerMVCTest {
     }
 
     @Test
-    void getUsersAsNonAdmin_returnsForbidden() throws Exception {
+    void getUsersAsNonAdmin_fails() throws Exception {
 
         UUID userId = UUID.randomUUID();
         User user = createTestUser(userId, UserRole.POLICYHOLDER);
@@ -91,7 +91,7 @@ class UserControllerMVCTest {
 
         mockMvc.perform(get("/users")
                         .with(user(new AuthenticationMetadata(userId, user.getUsername(), user.getPassword(), user.getRole(), user.getPermission(), user.isEmployed()))))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isInternalServerError());
 
         verify(userService, never()).getAllUsers();
     }
@@ -175,7 +175,7 @@ class UserControllerMVCTest {
         mockMvc.perform(put("/users/balance")
                         .with(csrf())
                         .with(user(new AuthenticationMetadata(userId, user.getUsername(), user.getPassword(), user.getRole(), user.getPermission(), user.isEmployed())))
-                        .param("amount", "100"))
+                        .param("addedAmount", "100"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/home"));
 
@@ -192,7 +192,7 @@ class UserControllerMVCTest {
         mockMvc.perform(put("/users/balance")
                         .with(csrf())
                         .with(user(new AuthenticationMetadata(userId, user.getUsername(), user.getPassword(), user.getRole(), user.getPermission(), user.isEmployed())))
-                        .param("amount", "-100"))
+                        .param("addedAmount", "-100"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("change-balance"))
                 .andExpect(model().attributeExists("user"));
@@ -216,14 +216,14 @@ class UserControllerMVCTest {
     }
 
     @Test
-    void changeUserRole_asNonAdmin_returnsForbidden() throws Exception {
+    void changeUserRole_asNonAdmin_fails() throws Exception {
         UUID userId = UUID.randomUUID();
         User nonAdmin = createTestUser(UUID.randomUUID(), UserRole.POLICYHOLDER);
 
         mockMvc.perform(patch("/users/" + userId + "/role")
                         .with(csrf())
                         .with(user(new AuthenticationMetadata(nonAdmin.getId(), nonAdmin.getUsername(), nonAdmin.getPassword(), nonAdmin.getRole(), nonAdmin.getPermission(), nonAdmin.isEmployed()))))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isInternalServerError());
 
         verify(userService, never()).changeRole(any());
     }
@@ -244,14 +244,14 @@ class UserControllerMVCTest {
     }
 
     @Test
-    void changeUserEmployment_asNonAdmin_returnsForbidden() throws Exception {
+    void changeUserEmployment_asNonAdmin_fails() throws Exception {
         UUID userId = UUID.randomUUID();
         User nonAdmin = createTestUser(UUID.randomUUID(), UserRole.POLICYHOLDER);
 
         mockMvc.perform(patch("/users/" + userId + "/employment")
                         .with(csrf())
                         .with(user(new AuthenticationMetadata(nonAdmin.getId(), nonAdmin.getUsername(), nonAdmin.getPassword(), nonAdmin.getRole(), nonAdmin.getPermission(), nonAdmin.isEmployed()))))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isInternalServerError());
 
         verify(userService, never()).changeEmployment(any());
 

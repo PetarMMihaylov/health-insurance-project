@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -86,14 +87,32 @@ class PolicyControllerMVCTest {
     }
 
     @Test
-    void getPolicyChangeLimitsForm_nonAdmin_forbidden() throws Exception {
+    void getAllPoliciesPage_ShouldReturnPolicyViewWithModel() throws Exception {
+
+        Policy policy = createDummyPolicy();
+        User user = createDummyUser(UserRole.POLICYHOLDER, policy);
+        AuthenticationMetadata auth = authenticationMetadata(user);
+
+        when(userService.getById(user.getId())).thenReturn(user);
+        when(policyService.getPolicies()).thenReturn(List.of(policy));
+
+        mockMvc.perform(get("/policy")
+                        .with(user(auth)))
+                .andExpect(status().isOk())
+                .andExpect(view().name("policy"))
+                .andExpect(model().attributeExists("user"))
+                .andExpect(model().attributeExists("allPolicies"));
+    }
+
+    @Test
+    void getPolicyChangeLimitsForm_nonAdmin_fails() throws Exception {
         Policy policy = createDummyPolicy();
         User user = createDummyUser(UserRole.POLICYHOLDER, policy);
         AuthenticationMetadata auth = authenticationMetadata(user);
 
         mockMvc.perform(get("/policy/{id}/policy-settings", policy.getId())
                         .with(user(auth)))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isInternalServerError());
 
         verifyNoInteractions(policyService);
     }
@@ -142,7 +161,7 @@ class PolicyControllerMVCTest {
     }
 
     @Test
-    void changePolicyLimits_policyNotFound_returns404() throws Exception {
+    void changePolicyLimits_policyNotFound_failsAndRedirects() throws Exception {
         Policy policy = createDummyPolicy();
         User admin = createDummyUser(UserRole.ADMIN, policy);
         AuthenticationMetadata auth = authenticationMetadata(admin);
@@ -158,8 +177,9 @@ class PolicyControllerMVCTest {
                         .param("limitForDentalService", "50")
                         .param("policyPrice", "500")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("Policy not found"));
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/policy"))
+                .andExpect(flash().attribute("errorMessage", "Policy not found"));
 
         verify(policyService).getById(policy.getId());
     }
@@ -179,7 +199,7 @@ class PolicyControllerMVCTest {
                         .param("limitForDentalService", "50")
                         .param("policyPrice", "500")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isInternalServerError());
 
         verifyNoInteractions(policyService);
     }

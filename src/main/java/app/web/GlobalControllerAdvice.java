@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.nio.file.AccessDeniedException;
+
 @ControllerAdvice
 public class GlobalControllerAdvice {
 
@@ -58,6 +60,15 @@ public class GlobalControllerAdvice {
     public ModelAndView handleUserNotFoundException(UserNotFoundException exception) {
 
         ModelAndView modelAndView = new ModelAndView("not-found");
+
+        return modelAndView;
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(AccessDeniedException.class)
+    public ModelAndView handleAccessDeniedException(AccessDeniedException exception) {
+
+        ModelAndView modelAndView = new ModelAndView("access-denied");
 
         return modelAndView;
     }

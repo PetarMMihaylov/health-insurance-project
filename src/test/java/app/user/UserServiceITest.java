@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @ActiveProfiles("test")
 @Transactional
-class UserServiceIntegrationTest {
+class UserServiceITest {
 
     @Autowired
     private UserService userService;
