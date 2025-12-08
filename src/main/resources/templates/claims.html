@@ -32,7 +32,7 @@
             <div class="table-cell"><strong>Type:</strong> <span th:text="${claim.claimType.displayName}">Medical</span></div>
             <div class="table-cell"><strong>Created On:</strong> <span th:text="${#temporals.format(claim.createdOn, 'yyyy-MM-dd HH:mm')}">YYYY-MM-DD</span></div>
             <div class="table-cell">
-                <a th:href="@{/claims/{id}(id=${claim.id})}" class="btn btn-login">GET INFO</a>
+                <a th:href="@{/claims/{id}(id=${claim.id})}" class="btn btn-login">View Info</a>
 
                 <form th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
                       th:action="@{/claims/{id}/deletion(id=${claim.id})}" method="post" style="display:inline;">
