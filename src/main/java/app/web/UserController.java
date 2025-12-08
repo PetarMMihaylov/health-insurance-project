@@ -44,13 +44,13 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ModelAndView getProfilePage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+    public ModelAndView getUpdatePage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
         User user = userService.getById(authenticationMetadata.getUserId());
         ProfileEditRequest profileEditRequest = RequestToUserMapper.fromUserToEditRequest(user);
 
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("profile-menu");
+        modelAndView.setViewName("profile-update");
         modelAndView.addObject("profileEditRequest", profileEditRequest);
         modelAndView.addObject("user", user);
 
@@ -63,7 +63,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             User user = userService.getById(authenticationMetadata.getUserId());
             ModelAndView modelAndView = new ModelAndView();
-            modelAndView.setViewName("profile-menu");
+            modelAndView.setViewName("profile-update");
             modelAndView.addObject("user", user);
             return modelAndView;
         }

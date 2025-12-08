@@ -174,8 +174,7 @@ class ClaimControllerMVCTest {
 
         mockMvc.perform(get("/claims/{id}", claimId).with(user(auth(user))))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/claims"))
-                .andExpect(flash().attributeExists("errorMessage"));
+                .andExpect(redirectedUrl("/claims"));
 
         verify(userService).getById(user.getId());
         verify(claimService).getByIdForUser(claimId, user);

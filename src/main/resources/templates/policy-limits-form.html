@@ -1,10 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Edit Policy Limits - Health Insurance</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
+<header>
+    <h1>Edit Policy Limits</h1>
+</header>
 
+<div class="container">
+    <div class="form-aligned">
+        <h2 th:text="'Policy: ' + ${policy.policyType.displayName}">Policy: Standard</h2>
+
+        <form th:action="@{/policy/{id}/policy-settings(id=${policy.id})}"
+              th:object="${policyLimitsChangeRequest}" method="post">
+
+            <div>
+                <label for="limitForMedications">Limit for Medications</label>
+                <input type="number" step="0.01" id="limitForMedications" th:field="*{limitForMedications}"/>
+                <p th:if="${#fields.hasErrors('limitForMedications')}" th:errors="*{limitForMedications}">Field cannot be empty!</p>
+            </div>
+
+            <div>
+                <label for="limitForHospitalTreatment">Limit for Hospital Treatment</label>
+                <input type="number" step="0.01" id="limitForHospitalTreatment" th:field="*{limitForHospitalTreatment}"/>
+                <p th:if="${#fields.hasErrors('limitForHospitalTreatment')}" th:errors="*{limitForHospitalTreatment}">Field cannot be empty!</p>
+            </div>
+
+            <div>
+                <label for="limitForSurgery">Limit for Surgery</label>
+                <input type="number" step="0.01" id="limitForSurgery" th:field="*{limitForSurgery}"/>
+                <p th:if="${#fields.hasErrors('limitForSurgery')}" th:errors="*{limitForSurgery}">Field cannot be empty!</p>
+            </div>
+
+            <div>
+                <label for="limitForDentalService">Limit for Dental Service</label>
+                <input type="number" step="0.01" id="limitForDentalService" th:field="*{limitForDentalService}"/>
+                <p th:if="${#fields.hasErrors('limitForDentalService')}" th:errors="*{limitForDentalService}">Field cannot be empty!</p>
+            </div>
+
+            <div>
+                <label for="policyPrice">Policy Price</label>
+                <input type="number" step="0.01" id="policyPrice" th:field="*{policyPrice}"/>
+                <p th:if="${#fields.hasErrors('policyPrice')}" th:errors="*{policyPrice}">Field cannot be empty!</p>
+            </div>
+
+            <div class="btn-wrapper">
+                <button type="submit" class="btn btn-register">Save Changes</button>
+            </div>
+        </form>
+
+        <div class="btn-wrapper" style="margin-top: 20px;">
+            <a th:href="@{/policy}" class="btn btn-login">Back to Policies</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    &copy; 2025 Health Insurance Project
+</footer>
 </body>
 </html>

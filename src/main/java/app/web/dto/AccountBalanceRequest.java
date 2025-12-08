@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class AccountBalanceRequest {
 
-    @NotNull
+    @NotNull(message = "Field cannot be empty!")
     @DecimalMin(value = "0.01")
     private BigDecimal addedAmount;
 }

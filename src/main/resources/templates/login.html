@@ -1,10 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+<header>
+    <h1>Health Insurance</h1>
+</header>
 
+<div class="container">
+    <h2>Login to Your Account</h2>
+
+    <form th:action="@{/login}" th:object="${loginRequest}" method="post" class="form-aligned">
+        <div>
+            <label for="username">Username</label>
+            <input type="text" id="username" th:field="*{username}" placeholder="Enter username">
+            <p th:if="${#fields.hasErrors('username')}" th:text="${#fields.errors('username')[0]}"></p>
+        </div>
+
+        <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" th:field="*{password}" placeholder="Enter password">
+            <p th:if="${#fields.hasErrors('password')}" th:text="${#fields.errors('password')[0]}"></p>
+        </div>
+
+        <div th:if="${errorMessage != null}" style="color: red; font-size: 0.9rem; text-align: center; margin-bottom: 15px;" th:text="${errorMessage}"></div>
+
+        <div class="btn-wrapper">
+            <button type="submit" class="btn btn-login">Login</button>
+        </div>
+    </form>
+</div>
+
+<footer>
+    &copy; 2025 Health Insurance Project
+</footer>
 </body>
 </html>

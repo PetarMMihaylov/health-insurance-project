@@ -1,10 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
+<header>
+    <h1>Health Insurance</h1>
+</header>
 
+<div class="container">
+    <h2>Create an Account</h2>
+    <form th:action="@{/register}" th:object="${registerRequest}" method="post" class="form-aligned">
+        <div>
+            <label for="username">Username</label>
+            <input type="text" id="username" th:field="*{username}" placeholder="Enter username" />
+            <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+        </div>
+
+        <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" th:field="*{password}" placeholder="Enter password" />
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+        </div>
+
+        <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" th:field="*{email}" placeholder="Enter email" />
+            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+        </div>
+
+        <div>
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" th:field="*{firstName}" placeholder="Enter first name" />
+            <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></p>
+        </div>
+
+        <div>
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" th:field="*{lastName}" placeholder="Enter last name" />
+            <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>
+        </div>
+
+        <div>
+            <label for="company">Company</label>
+            <select id="company" th:field="*{company}">
+                <option value="" disabled selected>Select a company</option>
+                <option th:each="c : ${T(app.user.model.CompanyName).values()}" th:value="${c}" th:text="${c.displayName}"></option>
+            </select>
+            <p th:if="${#fields.hasErrors('company')}" th:errors="*{company}"></p>
+        </div>
+
+        <div class="btn-wrapper">
+            <button type="submit" class="btn btn-register">Register</button>
+        </div>
+    </form>
+</div>
+
+<footer>
+    &copy; 2025 Health Insurance Project
+</footer>
 </body>
 </html>

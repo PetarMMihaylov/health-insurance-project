@@ -55,6 +55,11 @@ public class ClaimService {
                 .user(user)
                 .build();
 
+        log.info("Created new claim of type {} for user {} with requested amount {}",
+                claim.getClaimType(),
+                user.getUsername(),
+                claim.getRequestedAmount());
+
         return claimRepository.save(claim);
     }
 
@@ -78,6 +83,8 @@ public class ClaimService {
         claim.setDeleted(!claim.isDeleted());
         claim.setUpdatedOn(LocalDateTime.now());
         claimRepository.save(claim);
+
+        log.info("Soft delete toggled for claim . Deleted status is now {}", claim.isDeleted());
     }
 
     public Claim getById(UUID id) {

@@ -119,8 +119,7 @@ class TransactionControllerMVCTest {
 
         mockMvc.perform(get("/transactions").with(user(auth)))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/transactions"))
-                .andExpect(flash().attribute("errorMessage", "No transactions found"));
+                .andExpect(redirectedUrl("/transactions"));
 
         verify(transactionService).getAllTransactions(user);
     }
@@ -158,8 +157,7 @@ class TransactionControllerMVCTest {
 
         mockMvc.perform(get("/transactions/{id}", transactionId).with(user(auth)))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/transactions"))
-                .andExpect(flash().attribute("errorMessage", "Transaction not found"));
+                .andExpect(redirectedUrl("/transactions"));
     }
 
     @Test

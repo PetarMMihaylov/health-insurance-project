@@ -59,6 +59,7 @@ public class ClaimController {
 
     @GetMapping("/{id}")
     public ModelAndView getClaimDetails(@PathVariable UUID id, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+
         User user = userService.getById(authenticationMetadata.getUserId());
         Claim claim = claimService.getByIdForUser(id, user);
 

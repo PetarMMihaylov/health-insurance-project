@@ -1,10 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Policies - Health Insurance</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
+<header>
+    <h1>Policies</h1>
+</header>
 
+<div class="container">
+    <h2>Available Policies</h2>
+
+    <div th:if="${param.error != null and param.error[0] == 'balance'}" class="error-message" style="margin-bottom: 20px; color: red; font-weight: bold;">
+        Not enough balance!
+    </div>
+
+    <div class="table-wrapper">
+        <div th:each="policy : ${allPolicies}" class="policy-row">
+
+            <div class="policy-info">
+                <div>
+                    <h4>Policy Type</h4>
+                    <span th:text="${policy.policyType.displayName}">Comfort</span>
+                </div>
+                <div>
+                    <h4>Medications Limit</h4>
+                    <span th:text="${policy.limitForMedications}">0.00</span>
+                </div>
+                <div>
+                    <h4>Hospital Treatment Limit</h4>
+                    <span th:text="${policy.limitForHospitalTreatment}">0.00</span>
+                </div>
+                <div>
+                    <h4>Surgery Limit</h4>
+                    <span th:text="${policy.limitForSurgery}">0.00</span>
+                </div>
+                <div>
+                    <h4>Dental Service Limit</h4>
+                    <span th:text="${policy.limitForDentalService}">0.00</span>
+                </div>
+                <div>
+                    <h4>Policy Price</h4>
+                    <span th:text="${policy.policyPrice}">0.00</span>
+                </div>
+            </div>
+
+            <div class="policy-actions">
+                <div th:if="${user.policy.id == policy.id}">
+                    <span class="btn btn-login">ACTIVE</span>
+                </div>
+                <div th:if="${user.policy.id != policy.id}">
+                    <form th:action="@{/policy/{id}/user-policy(id=${policy.id})}" method="post">
+                        <input type="hidden" name="_method" value="patch" />
+                        <button type="submit" class="btn btn-register">SELECT</button>
+                    </form>
+                </div>
+                <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                    <a th:href="@{/policy/{id}/policy-settings(id=${policy.id})}" class="btn btn-login">Edit Limits</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="btn-wrapper" style="margin-top: 20px;">
+        <a th:href="@{/home}" class="btn btn-login">Back to Home</a>
+    </div>
+</div>
+
+<footer>
+    &copy; 2025 Health Insurance Project
+</footer>
 </body>
 </html>

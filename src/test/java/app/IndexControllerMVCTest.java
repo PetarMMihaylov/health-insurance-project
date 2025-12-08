@@ -22,6 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -35,11 +36,31 @@ class IndexControllerMVCTest {
     private UserService userService;
 
     @Test
-    void getIndexPage_ShouldReturnIndexView() throws Exception {
+    void getIndexPage_ShouldReturnIndexView_WhenNotAuthenticated() throws Exception {
 
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"));
+    }
+
+    @Test
+    void getIndexPage_ShouldRedirectToHome_WhenAuthenticated() throws Exception {
+
+        UUID userId = UUID.randomUUID();
+
+        AuthenticationMetadata authenticationMetadata = new AuthenticationMetadata(
+                userId,
+                "john",
+                "Password@1",
+                UserRole.POLICYHOLDER,
+                "not_delete",
+                true
+        );
+
+        mockMvc.perform(get("/").with(user(authenticationMetadata)))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/home"))
+                .andExpect(authenticated().withUsername("john"));
     }
 
     @Test
@@ -75,8 +96,7 @@ class IndexControllerMVCTest {
                         .with(csrf())
                         .param("username", "jo")
                         .param("password", "weakpw")
-                        .param("email", "not-an-email")
-                        .param("firstName", "Jo")
+                        .param("firstName", "J")
                         .param("lastName", "")
                         .param("company", ""))
                 .andExpect(status().isOk())
@@ -85,7 +105,6 @@ class IndexControllerMVCTest {
                         "registerRequest",
                         "username",
                         "password",
-                        "email",
                         "firstName",
                         "lastName",
                         "company"
@@ -108,7 +127,7 @@ class IndexControllerMVCTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("login"))
                 .andExpect(model().attributeExists("loginRequest"))
-                .andExpect(model().attribute("error",
+                .andExpect(model().attribute("errorMessage",
                         "Invalid username or password"));
     }
 

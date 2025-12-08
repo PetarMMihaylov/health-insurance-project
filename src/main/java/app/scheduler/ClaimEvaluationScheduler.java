@@ -13,7 +13,7 @@ public class ClaimEvaluationScheduler {
         this.claimService = claimService;
     }
 
-    @Scheduled(cron = "0 0 */6 * * *")
+    @Scheduled(cron = "0 */10 * * * *")
     public void autoEvaluateClaims() {
         claimService.evaluateClaims();
     }

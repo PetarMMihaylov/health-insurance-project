@@ -147,34 +147,37 @@ class TransactionServiceUTest {
     }
 
     @Test
-    void getAllTransactions_adminNoTransactions_throwsException() {
+    void getAllTransactions_adminNoTransactions_returnsEmptyList() {
+
         User admin = createDummyUser(UserRole.ADMIN);
 
         when(transactionRepository.findAll()).thenReturn(List.of());
 
-        TransactionNotFoundException ex = assertThrows(TransactionNotFoundException.class,
-                () -> transactionService.getAllTransactions(admin));
+        List<Transaction> result = transactionService.getAllTransactions(admin);
 
-        assertEquals("No transactions found for user with id " + admin.getId(), ex.getMessage());
+        assertNotNull(result);
+        assertTrue(result.isEmpty(), "Expected an empty list when no transactions are found");
 
         verify(transactionRepository, times(1)).findAll();
         verify(transactionRepository, never()).findAllByTransactionOwnerAndDeletedFalse(any());
     }
 
+
     @Test
-    void getAllTransactions_nonAdminNoTransactions_throwsException() {
+    void getAllTransactions_nonAdminNoTransactions_returnsEmptyList() {
         User user = createDummyUser(UserRole.POLICYHOLDER);
 
         when(transactionRepository.findAllByTransactionOwnerAndDeletedFalse(user)).thenReturn(List.of());
 
-        TransactionNotFoundException ex = assertThrows(TransactionNotFoundException.class,
-                () -> transactionService.getAllTransactions(user));
+        List<Transaction> result = transactionService.getAllTransactions(user);
 
-        assertEquals("No transactions found for user with id " + user.getId(), ex.getMessage());
+        assertNotNull(result);
+        assertTrue(result.isEmpty(), "Expected an empty list when no transactions are found");
 
         verify(transactionRepository, times(1)).findAllByTransactionOwnerAndDeletedFalse(user);
         verify(transactionRepository, never()).findAll();
     }
+
 
     @Test
     void getTransactionsCreatedByUserForPeriod_returnsTransactions() {
@@ -202,7 +205,7 @@ class TransactionServiceUTest {
     }
 
     @Test
-    void getTransactionsCreatedByUserForPeriod_noTransactions_throwsException() {
+    void getTransactionsCreatedByUserForPeriod_noTransactions_returnsEmptyList() {
         User user = createDummyUser(UserRole.POLICYHOLDER);
         LocalDate start = LocalDate.now().minusDays(7);
         LocalDate end = LocalDate.now();
@@ -210,10 +213,10 @@ class TransactionServiceUTest {
         when(transactionRepository.findAllByTransactionOwnerAndDeletedFalseAndCreatedOnBetween(any(), any(), any()))
                 .thenReturn(List.of());
 
-        TransactionNotFoundException ex = assertThrows(TransactionNotFoundException.class,
-                () -> transactionService.getTransactionsCreatedByUserForPeriod(user, start, end));
+        List<Transaction> result = transactionService.getTransactionsCreatedByUserForPeriod(user, start, end);
 
-        assertEquals("No transactions found for user with id " + user.getId(), ex.getMessage());
+        assertNotNull(result);
+        assertTrue(result.isEmpty(), "Expected an empty list when no transactions are found");
 
         verify(transactionRepository, times(1))
                 .findAllByTransactionOwnerAndDeletedFalseAndCreatedOnBetween(any(), any(), any());

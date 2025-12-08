@@ -106,7 +106,7 @@ class UserControllerMVCTest {
         mockMvc.perform(get("/users/profile")
                         .with(user(new AuthenticationMetadata(userId, user.getUsername(), user.getPassword(), user.getRole(), user.getPermission(), user.isEmployed()))))
                 .andExpect(status().isOk())
-                .andExpect(view().name("profile-menu"))
+                .andExpect(view().name("profile-update"))
                 .andExpect(model().attributeExists("user"))
                 .andExpect(model().attributeExists("profileEditRequest"));
 
@@ -123,7 +123,8 @@ class UserControllerMVCTest {
                         .with(csrf())
                         .with(user(new AuthenticationMetadata(userId, user.getUsername(), user.getPassword(), user.getRole(), user.getPermission(), user.isEmployed())))
                         .param("firstName", "John")
-                        .param("lastName", "Doe"))
+                        .param("lastName", "Doe")
+                        .param("password", "Password1@"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/home"));
 
@@ -143,7 +144,7 @@ class UserControllerMVCTest {
                         .param("firstName", "")
                         .param("lastName", ""))
                 .andExpect(status().isOk())
-                .andExpect(view().name("profile-menu"))
+                .andExpect(view().name("profile-update"))
                 .andExpect(model().attributeExists("user"));
 
         verify(userService, never()).updateProfile(any(), any());

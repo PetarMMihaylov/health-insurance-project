@@ -13,7 +13,7 @@ public class ClaimStatusChangeScheduler {
         this.claimService = claimService;
     }
 
-    @Scheduled(fixedDelayString = "PT30M")
+    @Scheduled(fixedDelayString = "PT5M")
     public void moveOpenClaimsToReview() {
         claimService.moveOpenClaimsToReview();
     }

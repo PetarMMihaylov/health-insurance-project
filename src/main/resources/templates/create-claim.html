@@ -1,10 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Claim</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
+
 <body>
+<header>
+    <h1>Create New Claim</h1>
+</header>
+
+<div class="container">
+
+    <form th:action="@{/claims/new-claim}" th:object="${claimSubmissionRequest}" method="post" class="form-aligned">
+
+        <div class="form-row">
+            <div class="form-field">
+                <label for="claimType"><strong>Claim Type</strong></label>
+                <select id="claimType" th:field="*{claimType}" required>
+                    <option value="">Select Type</option>
+                    <option th:each="type : ${T(app.claim.model.ClaimType).values()}"
+                            th:value="${type}" th:text="${type.displayName}">
+                    </option>
+                </select>
+                <p th:if="${#fields.hasErrors('claimType')}" th:errors="*{claimType}" class="error-message"></p>
+            </div>
+
+            <div class="form-field">
+                <label for="requestedAmount"><strong>Requested Amount</strong></label>
+                <input type="number" step="0.01" min="0" id="requestedAmount" th:field="*{requestedAmount}" required>
+                <p th:if="${#fields.hasErrors('requestedAmount')}" th:errors="*{requestedAmount}" class="error-message"></p>
+            </div>
+
+            <div class="form-field">
+                <label for="attachedDocument"><strong>Attached Document</strong></label>
+                <input type="text" id="attachedDocument" th:field="*{attachedDocument}" placeholder="Document reference" required>
+                <p th:if="${#fields.hasErrors('attachedDocument')}" th:errors="*{attachedDocument}" class="error-message"></p>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-field" style="flex: 1 1 100%;">
+                <label for="description"><strong>Description (optional)</strong></label>
+                <textarea id="description" th:field="*{description}" rows="4" placeholder="Enter claim description..."></textarea>
+            </div>
+        </div>
+
+        <div class="btn-wrapper" style="margin-top: 25px;">
+            <button type="submit" class="btn btn-register">Submit Claim</button>
+        </div>
+    </form>
+
+    <div class="btn-wrapper" style="margin-top: 25px;">
+        <a th:href="@{/claims}" class="btn btn-login">Back to Claims</a>
+    </div>
+
+</div>
+
+<footer>
+    &copy; 2025 Health Insurance Project
+</footer>
 
 </body>
 </html>

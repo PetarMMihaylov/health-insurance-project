@@ -1,10 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Account Balance - Health Insurance</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+<header>
+    <h1>Change Account Balance</h1>
+</header>
 
+<div class="container">
+    <form th:action="@{/users/balance}" th:object="${accountBalanceRequest}" method="post" class="form-aligned">
+
+        <input type="hidden" name="_method" value="PUT" />
+
+        <label for="addedAmount"><strong>Amount to Add</strong></label>
+        <input type="number" id="addedAmount" th:field="*{addedAmount}" step="0.01" min="0.01" placeholder="Enter amount" required>
+        <p th:if="${#fields.hasErrors('addedAmount')}" th:errors="*{addedAmount}" class="error-message"></p>
+
+        <div class="btn-wrapper" style="margin-top: 20px;">
+            <button type="submit" class="btn btn-register">Add Amount</button>
+            <a th:href="@{/home}" class="btn btn-login">Cancel</a>
+        </div>
+
+    </form>
+
+    <div class="profile-info" style="margin-top: 40px; text-align: left; display: inline-block; background: #ffffffee; padding: 25px 35px; border-radius: 20px; box-shadow: 0 12px 25px rgba(0,0,0,0.15);">
+        <p><strong>Current Balance:</strong> $<span th:text="${user.accountBalance}">0.00</span></p>
+    </div>
+</div>
+
+<footer>
+    &copy; 2025 Health Insurance Project
+</footer>
 </body>
 </html>

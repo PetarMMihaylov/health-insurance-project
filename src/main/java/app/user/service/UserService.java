@@ -124,6 +124,12 @@ public class UserService implements UserDetailsService {
         user.setUpdatedOn(LocalDateTime.now());
 
         userRepository.save(user);
+
+        log.info("Updated profile for user {}. New name: {} {}, email: {}",
+                user.getUsername(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail());
     }
 
     @CacheEvict(value = "users", allEntries = true)
@@ -138,6 +144,8 @@ public class UserService implements UserDetailsService {
 
         user.setUpdatedOn(LocalDateTime.now());
         userRepository.save(user);
+
+        log.info("Changed role for user {}. New role: {}", user.getUsername(), user.getRole());
     }
 
     @CacheEvict(value = "users", allEntries = true)
@@ -146,6 +154,8 @@ public class UserService implements UserDetailsService {
         user.setEmployed(!user.isEmployed());
         user.setUpdatedOn(LocalDateTime.now());
         userRepository.save(user);
+
+        log.info("Changed employment status for user {}. Employed: {}", user.getUsername(), user.isEmployed());
     }
 
     @Cacheable("users")
@@ -162,10 +172,15 @@ public class UserService implements UserDetailsService {
         user.setUpdatedOn(LocalDateTime.now());
         userRepository.save(user);
         transactionService.create(user, amountToIncrease, TransactionStatus.COMPLETED);
+
+        log.info("Updated balance for user {}. Added amount: {}, new balance: {}",
+                user.getUsername(),
+                amountToIncrease,
+                user.getAccountBalance());
     }
 
     @CacheEvict(value = "users", allEntries = true)
-    public void changePolicy(UUID id, User user) {
+    public boolean changePolicy(UUID id, User user) {
         Policy policy = policyService.getById(id);
 
         if (user.getAccountBalance().compareTo(policy.getPolicyPrice()) >= 0) {
@@ -175,9 +190,11 @@ public class UserService implements UserDetailsService {
             userRepository.save(user);
             transactionService.create(user, policy.getPolicyPrice(), TransactionStatus.COMPLETED);
             log.info("User [{}] changed policy to [{}].", user.getUsername(), policy.getPolicyType().getDisplayName());
+            return true;
         } else {
             transactionService.create(user, policy.getPolicyPrice(), TransactionStatus.FAILED);
             log.info("User [{}] unsuccessfully tried to change policy to [{}].", user.getUsername(), policy.getPolicyType().getDisplayName());
+            return false;
         }
     }
 

@@ -14,44 +14,38 @@ import java.nio.file.AccessDeniedException;
 public class GlobalControllerAdvice {
 
     @ExceptionHandler(SecurityException.class)
-    public String handleSecurityException(SecurityException exception, RedirectAttributes redirectAttributes) {
+    public String handleSecurityException(SecurityException exception) {
 
-        redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
         return "redirect:/reports";
     }
 
     @ExceptionHandler(ClaimNotFoundException.class)
-    public String handleClaimNotFoundException(ClaimNotFoundException exception, RedirectAttributes redirectAttributes) {
+    public String handleClaimNotFoundException(ClaimNotFoundException exception) {
 
-        redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
         return "redirect:/claims";
     }
 
     @ExceptionHandler(InvalidCompanyException.class)
-    public String handleInvalidCompanyException(InvalidCompanyException exception, RedirectAttributes redirectAttributes) {
+    public String handleInvalidCompanyException(InvalidCompanyException exception) {
 
-        redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
         return "redirect:/register";
     }
 
     @ExceptionHandler(PolicyNotFoundException.class)
-    public String handlePolicyNotFoundException(PolicyNotFoundException exception, RedirectAttributes redirectAttributes) {
+    public String handlePolicyNotFoundException(PolicyNotFoundException exception) {
 
-        redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
         return "redirect:/policy";
     }
 
     @ExceptionHandler(TransactionNotFoundException.class)
-    public String handleTransactionNotFoundException(TransactionNotFoundException exception, RedirectAttributes redirectAttributes) {
+    public String handleTransactionNotFoundException(TransactionNotFoundException exception) {
 
-        redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
         return "redirect:/transactions";
     }
 
     @ExceptionHandler(UserAlreadyFoundException.class)
-    public String handleUserAlreadyFoundException(UserAlreadyFoundException exception, RedirectAttributes redirectAttributes) {
+    public String handleUserAlreadyFoundException(UserAlreadyFoundException exception) {
 
-        redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
         return "redirect:/register";
     }
 

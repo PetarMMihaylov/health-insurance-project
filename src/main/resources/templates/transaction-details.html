@@ -1,10 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transaction Details - Health Insurance</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
+<header>
+    <h1>Transaction Details</h1>
+</header>
 
+<div class="container">
+    <div class="table-wrapper">
+        <div class="table-row">
+            <div class="table-cell">
+                <h3>Reference Number</h3>
+                <span th:text="${transaction.referenceNumber}">REF12345</span>
+            </div>
+            <div class="table-cell">
+                <h3>Status</h3>
+                <span th:text="${transaction.transactionStatus.displayName}">Completed</span>
+            </div>
+            <div class="table-cell">
+                <h3>Paid Amount</h3>
+                <span th:text="${transaction.paidAmount}">0.00</span>
+            </div>
+            <div class="table-cell">
+                <h3>Created On</h3>
+                <span th:text="${#temporals.format(transaction.createdOn, 'yyyy-MM-dd HH:mm')}">2025-12-06T12:00</span>
+            </div>
+            <div class="table-cell">
+                <h3>Updated On</h3>
+                <span th:text="${#temporals.format(transaction.updatedOn, 'yyyy-MM-dd HH:mm')}">2025-12-06T12:00</span>
+            </div>
+            <div class="table-cell">
+                <h3>Transaction Owner</h3>
+                <span th:text="${transaction.transactionOwner.username}">username</span>
+            </div>
+            <div class="table-cell" th:if="${#authorization.expression('hasRole(''ADMIN'') and hasAuthority(''can_delete'')')}">
+                <form th:action="@{/transactions/{id}/deletion(id=${transaction.id})}" method="post">
+                    <input type="hidden" name="_method" value="delete" />
+                    <button type="submit"
+                            th:text="${transaction.deleted} ? 'RESTORE' : 'DELETE'"
+                            th:class="${transaction.deleted} ? 'btn btn-restore' : 'btn btn-register'">
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-wrapper">
+        <a th:href="@{/transactions}" class="btn btn-login">Back to Transactions</a>
+    </div>
+</div>
+
+<footer>
+    &copy; 2025 Health Insurance Project
+</footer>
 </body>
 </html>

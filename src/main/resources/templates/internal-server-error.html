@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal Server Error</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+<header>
+    <h1>Health Insurance</h1>
+</header>
 
+<div class="container">
+    <h2>Oops! Something went wrong.</h2>
+    <p>We encountered an unexpected error. Please try again later.</p>
+
+    <div class="btn-wrapper">
+        <a th:href="@{/}" class="btn btn-register">Go to Home</a>
+    </div>
+</div>
+
+<footer>
+    &copy; 2025 Health Insurance Project
+</footer>
 </body>
 </html>

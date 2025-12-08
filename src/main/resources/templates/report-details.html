@@ -1,10 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Details - Health Insurance</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+<header>
+    <h1>Report Details</h1>
+</header>
 
+<div class="container">
+    <div class="report-card">
+        <p><strong>Report ID:</strong> <span th:text="${summary.id}">UUID</span></p>
+        <p><strong>Start Date:</strong> <span th:text="${summary.startDate}">YYYY-MM-DD</span></p>
+        <p><strong>End Date:</strong> <span th:text="${summary.endDate}">YYYY-MM-DD</span></p>
+        <p><strong>Total Claims:</strong> <span th:text="${summary.totalClaims}">0</span></p>
+        <p><strong>Total Approved Claims:</strong> <span th:text="${summary.totalApprovedClaims}">0</span></p>
+        <p><strong>Total Reimbursed Amount:</strong> $<span th:text="${summary.totalReimbursedAmount}">0.00</span></p>
+        <p><strong>Total Transactions:</strong> <span th:text="${summary.totalTransactions}">0</span></p>
+        <p><strong>Created At:</strong> <span th:text="${#temporals.format(summary.createdAt, 'yyyy-MM-dd HH:mm')}">YYYY-MM-DD HH:mm</span></p>
+    </div>
+
+    <div class="btn-wrapper" style="margin-top: 30px;">
+        <a th:href="@{/reports}" class="btn btn-login">Back to Reports</a>
+    </div>
+</div>
+
+<footer>
+    &copy; 2025 Health Insurance Project
+</footer>
 </body>
 </html>

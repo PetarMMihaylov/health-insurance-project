@@ -1,10 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Report - Health Insurance</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
+<header>
+    <h1>Create Report</h1>
+</header>
 
+<div class="container">
+    <h2>Generate a New Report</h2>
+
+    <form th:action="@{/reports/new-report}" th:object="${createSummaryByDates}" method="post" class="form-aligned">
+        <div>
+            <label for="startDate">Start Date</label>
+            <input type="date" id="startDate" th:field="*{startDate}" />
+            <p th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></p>
+        </div>
+
+        <div>
+            <label for="endDate">End Date</label>
+            <input type="date" id="endDate" th:field="*{endDate}" />
+            <p th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></p>
+        </div>
+
+        <div class="btn-wrapper">
+            <button type="submit" class="btn btn-register">Create Report</button>
+            <a th:href="@{/reports}" class="btn btn-login">Back to Reports</a>
+        </div>
+    </form>
+</div>
+
+<footer>
+    &copy; 2025 Health Insurance Project
+</footer>
 </body>
 </html>

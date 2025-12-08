@@ -14,9 +14,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class CreateSummaryByDates {
 
-    @NotNull
+    @NotNull(message = "Field cannot be empty!")
     private LocalDate startDate;
 
-    @NotNull
+    @NotNull(message = "Field cannot be empty!")
     private LocalDate endDate;
 }

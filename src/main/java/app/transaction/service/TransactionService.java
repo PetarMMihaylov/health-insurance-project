@@ -7,6 +7,7 @@ import app.transaction.model.TransactionStatus;
 import app.transaction.repository.TransactionRepository;
 import app.user.model.User;
 import app.user.model.UserRole;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,6 +17,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 public class TransactionService {
 
@@ -42,29 +44,15 @@ public class TransactionService {
 
     public List<Transaction> getTransactionsCreatedByUserForPeriod(User user, LocalDate startDate, LocalDate endDate) {
 
-        List<Transaction> transactions = transactionRepository.findAllByTransactionOwnerAndDeletedFalseAndCreatedOnBetween(user, startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX));
-
-        if (transactions.isEmpty()) {
-            throw new TransactionNotFoundException("No transactions found for user with id " + user.getId());
-        }
-
-        return transactions;
+        return transactionRepository.findAllByTransactionOwnerAndDeletedFalseAndCreatedOnBetween(user, startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX));
     }
 
     public List<Transaction> getAllTransactions(User user) {
-
-        List<Transaction> transactions;
         if (user.getRole() == UserRole.ADMIN) {
-            transactions = transactionRepository.findAll();
+            return transactionRepository.findAll();
         } else {
-            transactions = transactionRepository.findAllByTransactionOwnerAndDeletedFalse(user);
+            return transactionRepository.findAllByTransactionOwnerAndDeletedFalse(user);
         }
-
-        if (transactions.isEmpty()) {
-            throw new TransactionNotFoundException("No transactions found for user with id " + user.getId());
-        }
-
-        return transactions;
     }
 
     public Transaction getById(UUID id) {
@@ -88,5 +76,7 @@ public class TransactionService {
         transaction.setDeleted(!transaction.isDeleted());
         transaction.setUpdatedOn(LocalDateTime.now());
         transactionRepository.save(transaction);
+
+        log.info("Soft delete toggled for claim . Deleted status is now {}", transaction.isDeleted());
     }
 }

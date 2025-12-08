@@ -14,14 +14,15 @@ import org.hibernate.validator.constraints.URL;
 @NoArgsConstructor
 public class ProfileEditRequest {
 
-    @Size(min = 3, max = 18)
+    @NotBlank(message = "First name field must not be empty.")
+    @Size(min = 2, max = 18, message = "First name must be between 2 and 18 symbols.")
     private String firstName;
 
-    @Size(min = 3, max = 18)
+    @NotBlank(message = "First name field must not be empty.")
+    @Size(min = 2, max = 18, message = "First name must be between 2 and 18 symbols.")
     private String lastName;
 
-
-    @Email(message = "Please provide a valid email address.")
+    @Email
     private String email;
 
     @URL

@@ -1,10 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Health Insurance</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+<header>
+    <h1>Reports</h1>
+</header>
 
+<div class="container">
+    <div class="btn-wrapper">
+        <a th:href="@{/reports/new-report}" class="btn btn-register">Create Report</a>
+    </div>
+
+    <h2>Your Reports:</h2>
+    <div class="reports-list">
+        <div th:if="${#lists.isEmpty(summaries)}" style="margin-top: 20px; color: #555;">
+            No reports found.
+        </div>
+        <div th:each="report : ${summaries}" class="report-card">
+            <p><strong>Report ID:</strong> <span th:text="${report.id}">UUID</span></p>
+            <p><strong>Start Date:</strong> <span th:text="${report.startDate}">YYYY-MM-DD</span></p>
+            <p><strong>End Date:</strong> <span th:text="${report.endDate}">YYYY-MM-DD</span></p>
+            <p><strong>Created At:</strong> <span th:text="${#temporals.format(report.createdAt, 'yyyy-MM-dd HH:mm')}">YYYY-MM-DD HH:mm</span></p>
+
+            <div class="btn-wrapper">
+                <form th:action="@{/reports/{id}(id=${report.id})}" method="get">
+                    <button type="submit" class="btn btn-login">View Info</button>
+                </form>
+                <form th:action="@{/reports/{id}(id=${report.id})}" method="post">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <button type="submit" class="btn btn-register">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-wrapper" style="margin-top: 30px;">
+        <a th:href="@{/home}" class="btn btn-login">Back to Home</a>
+    </div>
+</div>
+
+<footer>
+    &copy; 2025 Health Insurance Project
+</footer>
 </body>
 </html>

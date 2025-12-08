@@ -56,7 +56,7 @@ public class ReportService {
 
             client.deleteReport(id);
         } catch (FeignException exception) {
-            log.error("[Failed]: Reason for failure: %s.".formatted(exception.getMessage()));
+            log.error("[S2S Call]: Failed to delete report. Reason: {}", exception.getMessage());
             throw exception;
         }
     }
@@ -108,7 +108,7 @@ public class ReportService {
         try {
             client.createReport(createSummaryRequest);
         } catch (FeignException exception) {
-            log.error("[S2S Call]: Failed due to %s.".formatted(exception.getMessage()));
+            log.error("[S2S Call]: Failed to create report. Reason: {}", exception.getMessage());
             throw exception;
         }
     }

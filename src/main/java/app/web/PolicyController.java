@@ -46,8 +46,15 @@ public class PolicyController {
 
     @PatchMapping("/{id}/user-policy")
     public String changeUserPolicy(@PathVariable UUID id, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+
         User user = userService.getById(authenticationMetadata.getUserId());
-        userService.changePolicy(id, user);
+
+        boolean success = userService.changePolicy(id, user);
+
+        if (!success) {
+            return "redirect:/policy?error=balance";
+        }
+
         return "redirect:/policy";
     }
 

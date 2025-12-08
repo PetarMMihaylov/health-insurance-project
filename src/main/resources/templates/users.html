@@ -1,10 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users - Health Insurance</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+<header>
+    <h1>Users</h1>
+</header>
 
+<div class="container">
+    <h2>Registered Users</h2>
+
+    <!-- Show message if no users -->
+    <div th:if="${#lists.isEmpty(users)}" class="error-message">
+        No users found.
+    </div>
+
+    <!-- Loop through users -->
+    <div th:each="user : ${users}" class="table-row">
+        <div class="table-cell user-details">
+            <p><strong>Username:</strong> <span th:text="${user.username}"></span></p>
+            <p><strong>Full Name:</strong> <span th:text="${user.firstName} + ' ' + ${user.lastName}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+            <p><strong>Role:</strong> <span th:text="${user.role.displayName}"></span></p>
+            <p><strong>Permission:</strong> <span th:text="${user.permission}"></span></p>
+            <p><strong>Company:</strong> <span th:text="${user.companyName.displayName}"></span></p>
+            <p><strong>Employed:</strong> <span th:text="${user.employed} ? 'Yes' : 'No'"></span></p>
+            <p><strong>Account Balance:</strong> $<span th:text="${user.accountBalance}"></span></p>
+            <p><strong>Created On:</strong> <span th:text="${#temporals.format(user.createdOn, 'yyyy-MM-dd HH:mm')}"></span></p>
+            <p><strong>Updated On:</strong> <span th:text="${#temporals.format(user.updatedOn, 'yyyy-MM-dd HH:mm')}"></span></p>
+            <p><strong>Policy:</strong> <span th:text="${user.policy.policyType.displayName}"></span></p>
+        </div>
+
+        <!-- Admin buttons -->
+        <div class="table-cell user-actions" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+            <form th:action="@{/users/{id}/role(id=${user.id})}" method="post" style="display:inline;">
+                <input type="hidden" name="_method" value="patch"/>
+                <button type="submit" class="btn btn-register">CHANGE ROLE</button>
+            </form>
+
+            <form th:action="@{/users/{id}/employment(id=${user.id})}" method="post" style="display:inline;">
+                <input type="hidden" name="_method" value="patch"/>
+                <button type="submit" class="btn btn-login">CHANGE EMPLOYMENT</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="btn-wrapper" style="margin-top: 30px;">
+        <a th:href="@{/home}" class="btn btn-login">Back to Home</a>
+    </div>
+</div>
+
+<footer>
+    &copy; 2025 Health Insurance Project
+</footer>
 </body>
 </html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile - Health Insurance</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <h1>Update Profile</h1>
+</header>
+
+<div class="container">
+    <form th:action="@{/users/profile}" th:object="${profileEditRequest}" method="post" class="form-aligned">
+        <input type="hidden" name="_method" value="put">
+
+        <label for="firstName"><strong>First Name</strong></label>
+        <input type="text" id="firstName" th:field="*{firstName}" placeholder="First Name" required>
+        <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error-message"></p>
+
+        <label for="lastName"><strong>Last Name</strong></label>
+        <input type="text" id="lastName" th:field="*{lastName}" placeholder="Last Name" required>
+        <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error-message"></p>
+
+        <label for="email"><strong>Email (optional)</strong></label>
+        <input type="email" id="email" th:field="*{email}" placeholder="Email">
+        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></p>
+
+        <label for="profilePicture"><strong>Profile Picture URL (optional)</strong></label>
+        <input type="url" id="profilePicture" th:field="*{profilePicture}" placeholder="https://example.com/pic.jpg">
+        <p th:if="${#fields.hasErrors('profilePicture')}" th:errors="*{profilePicture}" class="error-message"></p>
+
+        <div class="btn-wrapper" style="margin-top: 20px;">
+            <button type="submit" class="btn btn-register">Update Profile</button>
+            <a th:href="@{/home}" class="btn btn-login">Cancel</a>
+        </div>
+
+    </form>
+</div>
+
+<footer>
+    &copy; 2025 Health Insurance Project
+</footer>
+</body>
+</html>

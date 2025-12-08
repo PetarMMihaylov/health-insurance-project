@@ -1,10 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claim Details</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-<body>
 
+<body>
+<header>
+    <h1>Claim Details</h1>
+</header>
+
+<div class="container">
+    <div class="details-card">
+
+        <p><strong>Claim ID:</strong> <span th:text="${claim.id}"></span></p>
+        <p><strong>Status:</strong> <span th:text="${claim.claimStatus.displayName}"></span></p>
+        <p><strong>Type:</strong> <span th:text="${claim.claimType.displayName}"></span></p>
+
+        <p><strong>Requested Amount:</strong>
+            <span th:text="${claim.requestedAmount}"></span>
+        </p>
+
+        <p><strong>Attached Document:</strong>
+            <span th:text="${claim.attachedDocument}"></span>
+        </p>
+
+        <p><strong>Description:</strong>
+            <span th:text="${claim.description}"></span>
+        </p>
+
+        <p><strong>Created On:</strong>
+            <span th:text="${#temporals.format(claim.createdOn, 'yyyy-MM-dd HH:mm')}"></span>
+        </p>
+
+        <p><strong>Updated On:</strong>
+            <span th:text="${#temporals.format(claim.updatedOn, 'yyyy-MM-dd HH:mm')}"></span>
+        </p>
+
+        <hr>
+
+        <h3>User Information</h3>
+        <p><strong>Username:</strong> <span th:text="${claim.user.username}"></span></p>
+        <p><strong>Full Name:</strong>
+            <span th:text="${claim.user.firstName}"></span>
+            <span th:text="${claim.user.lastName}"></span>
+        </p>
+
+    </div>
+
+    <div class="btn-wrapper" style="margin-top: 30px;">
+        <a th:href="@{/claims}" class="btn btn-login">Back to Claims</a>
+    </div>
+</div>
+
+<footer>
+    &copy; 2025 Health Insurance Project
+</footer>
 </body>
 </html>

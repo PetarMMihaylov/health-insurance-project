@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Access Denied</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
+<header>
+    <h1>Health Insurance</h1>
+</header>
 
+<div class="container">
+    <h2>Access Denied</h2>
+    <p>You do not have permission to access this content.</p>
+    <div class="btn-wrapper">
+        <a th:href="@{/login}" class="btn btn-login">Login</a>
+        <a th:href="@{/}" class="btn btn-register">Go Home</a>
+    </div>
+</div>
+
+<footer>
+    &copy; 2025 Health Insurance Project
+</footer>
 </body>
 </html>

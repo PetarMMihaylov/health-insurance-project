@@ -13,23 +13,23 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class PolicyLimitsChangeRequest {
 
-    @NotNull
+    @NotNull(message = "Field cannot be empty!")
     @DecimalMin(value = "0.00")
     private BigDecimal limitForMedications;
 
-    @NotNull
+    @NotNull(message = "Field cannot be empty!")
     @DecimalMin(value = "0.00")
     private BigDecimal limitForHospitalTreatment;
 
-    @NotNull
+    @NotNull(message = "Field cannot be empty!")
     @DecimalMin(value = "0.00")
     private BigDecimal limitForSurgery;
 
-    @NotNull
+    @NotNull(message = "Field cannot be empty!")
     @DecimalMin(value = "0.00")
     private BigDecimal limitForDentalService;
 
-    @NotNull
+    @NotNull(message = "Field cannot be empty!")
     @DecimalMin(value = "0.00")
     private BigDecimal policyPrice;
 }

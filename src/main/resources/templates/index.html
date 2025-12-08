@@ -1,10 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Health Insurance</title>
+
+    <!-- Embedded CSS (can be moved to /static/css/style.css later) -->
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
+<header>
+    <h1>Health Insurance</h1>
+</header>
 
+<div class="container">
+    <h2>Welcome to Your Health Insurance Portal</h2>
+    <p>Manage your plans, apply for coverage, and explore our insurance services.</p>
+
+    <div class="btn-wrapper">
+        <a th:href="@{/register}" class="btn btn-register">Register</a>
+        <a th:href="@{/login}" class="btn btn-login">Login</a>
+    </div>
+</div>
+
+<footer>
+    &copy; 2025 Health Insurance Project
+</footer>
 </body>
 </html>

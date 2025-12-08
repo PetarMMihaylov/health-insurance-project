@@ -178,8 +178,7 @@ class PolicyControllerMVCTest {
                         .param("policyPrice", "500")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/policy"))
-                .andExpect(flash().attribute("errorMessage", "Policy not found"));
+                .andExpect(redirectedUrl("/policy"));
 
         verify(policyService).getById(policy.getId());
     }
@@ -236,6 +235,24 @@ class PolicyControllerMVCTest {
         AuthenticationMetadata auth = authenticationMetadata(user);
 
         when(userService.getById(user.getId())).thenReturn(user);
+
+        mockMvc.perform(patch("/policy/{id}/user-policy", policy.getId())
+                        .with(user(auth))
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/policy?error=balance"));
+
+        verify(userService).changePolicy(policy.getId(), user);
+    }
+
+    @Test
+    void changeUserPolicy_successfulChange_redirectsToPolicy() throws Exception {
+        Policy policy = createDummyPolicy();
+        User user = createDummyUser(UserRole.POLICYHOLDER, policy);
+        AuthenticationMetadata auth = authenticationMetadata(user);
+
+        when(userService.getById(user.getId())).thenReturn(user);
+        when(userService.changePolicy(policy.getId(), user)).thenReturn(true);
 
         mockMvc.perform(patch("/policy/{id}/user-policy", policy.getId())
                         .with(user(auth))

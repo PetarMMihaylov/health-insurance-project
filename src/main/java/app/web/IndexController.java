@@ -26,7 +26,11 @@ public class IndexController {
     }
 
     @GetMapping("/")
-    public String getIndexPage() {
+    public String getIndexPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+
+        if (authenticationMetadata != null) {
+            return "redirect:/home";
+        }
 
         return "index";
     }
@@ -54,14 +58,14 @@ public class IndexController {
     }
 
     @GetMapping("/login")
-    public ModelAndView getLoginPage(@RequestParam(name = "error", required = false) String errorMessage) {
+    public ModelAndView getLoginPage(@RequestParam(name = "error", required = false) String error) {
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login");
         modelAndView.addObject("loginRequest", new LoginRequest());
 
-        if (errorMessage != null) {
-            modelAndView.addObject(errorMessage, "Invalid username or password");
+        if (error != null) {
+            modelAndView.addObject("errorMessage", "Invalid username or password");
         }
 
         return modelAndView;
