@@ -4,6 +4,7 @@ import app.claim.service.ClaimService;
 import app.security.AuthenticationMetadata;
 import app.user.model.User;
 import app.user.service.UserService;
+import app.utility.DocumentUtil;
 import app.web.dto.ClaimSubmissionRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,13 @@ import java.util.UUID;
 public class ClaimController {
     private final ClaimService claimService;
     private final UserService userService;
+    private final DocumentUtil documentUtil;
 
     @Autowired
-    public ClaimController(ClaimService claimService, UserService userService) {
+    public ClaimController(ClaimService claimService, UserService userService, DocumentUtil documentUtil) {
         this.claimService = claimService;
         this.userService = userService;
+        this.documentUtil = documentUtil;
     }
 
     @GetMapping
@@ -52,6 +55,7 @@ public class ClaimController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("create-claim");
         modelAndView.addObject("claimSubmissionRequest", new ClaimSubmissionRequest());
+        modelAndView.addObject("documents", documentUtil.getAvailableDocuments());
         modelAndView.addObject("user", user);
 
         return modelAndView;
@@ -78,6 +82,7 @@ public class ClaimController {
         if (bindingResult.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.setViewName("create-claim");
+            modelAndView.addObject("documents", documentUtil.getAvailableDocuments());
             modelAndView.addObject("user", user);
             return modelAndView;
         }

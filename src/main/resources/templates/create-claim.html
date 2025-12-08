@@ -36,7 +36,10 @@
 
             <div class="form-field">
                 <label for="attachedDocument"><strong>Attached Document</strong></label>
-                <input type="text" id="attachedDocument" th:field="*{attachedDocument}" placeholder="Document reference" required>
+                <select id="attachedDocument" th:field="*{attachedDocument}" required>
+                    <option value="">Select Document</option>
+                    <option th:each="doc : ${documents}" th:value="${doc}" th:text="${doc}"></option>
+                </select>
                 <p th:if="${#fields.hasErrors('attachedDocument')}" th:errors="*{attachedDocument}" class="error-message"></p>
             </div>
         </div>

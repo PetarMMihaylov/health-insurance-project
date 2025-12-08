@@ -9,6 +9,7 @@ import app.policy.model.PolicyType;
 import app.security.AuthenticationMetadata;
 import app.user.model.*;
 import app.user.service.UserService;
+import app.utility.DocumentUtil;
 import app.web.ClaimController;
 import app.web.dto.ClaimSubmissionRequest;
 import org.junit.jupiter.api.Test;
@@ -43,6 +44,9 @@ class ClaimControllerMVCTest {
 
     @MockitoBean
     private UserService userService;
+
+    @MockitoBean
+    private DocumentUtil documentUtil;
 
     private User createDummyUser(UserRole role) {
 
@@ -125,7 +129,8 @@ class ClaimControllerMVCTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("create-claim"))
                 .andExpect(model().attributeExists("user"))
-                .andExpect(model().attributeExists("claimSubmissionRequest"));
+                .andExpect(model().attributeExists("claimSubmissionRequest"))
+                .andExpect(model().attributeExists("documents"));
 
         verify(userService).getById(user.getId());
     }
