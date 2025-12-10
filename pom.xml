@@ -8,11 +8,11 @@
 		<version>3.4.0</version>
 		<relativePath/>
 	</parent>
-	<groupId>smart-wallet</groupId>
-	<artifactId>smart-wallet-application</artifactId>
+	<groupId>health-insurance</groupId>
+	<artifactId>health-insurance-application</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Smart Wallet Application</name>
-	<description>Smart Wallet Application</description>
+	<name>Health Insurance Application</name>
+	<description>Health Insurance Application</description>
 	<url/>
 	<licenses>
 		<license/>
