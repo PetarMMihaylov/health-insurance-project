@@ -2,7 +2,7 @@
 
 ## 📌 Overview
 The Health Insurance Application is a Spring Boot–based web application designed to manage health insurance policies, clients, and claims.  
-It provides secure authentication, policy management, and integrations with external services for a complete insurance workflow.
+It provides secure authentication, policy management, and integrations with an external microservice for a complete insurance workflow.
 
 ---
 
