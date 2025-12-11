@@ -23,7 +23,9 @@ It provides secure authentication, policy management, and integrations with an e
 - User authentication and role-based and permission-based authorization
 - Policy management (choose, update, view insurance policies)
 - Client management (register, update client details)
+- Claims creation using a selection of predefined medical document templates, located in static/documents
 - Claims processing and validation
+- Automatic scheduled claims evaluation
 - Transaction management (view and delete)
 - Reports management (create, view and delete) via communication with Reports SVC microservice
 - Secure password encryption with Spring Security
