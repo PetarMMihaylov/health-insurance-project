@@ -160,7 +160,7 @@ public class UserService implements UserDetailsService {
 
     @Cacheable("users")
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findAllByOrderByUpdatedOnDesc();
     }
 
     @Transactional

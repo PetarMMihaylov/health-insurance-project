@@ -12,7 +12,9 @@ import java.util.UUID;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, UUID> {
 
-    List<Transaction> findAllByTransactionOwnerAndDeletedFalse(User user);
+    List<Transaction> findAllByTransactionOwnerAndDeletedFalseOrderByUpdatedOnDesc(User user);
 
     List<Transaction> findAllByTransactionOwnerAndDeletedFalseAndCreatedOnBetween(User user, LocalDateTime startDate, LocalDateTime endDate);
+
+    List<Transaction> findAllByOrderByUpdatedOnDesc();
 }

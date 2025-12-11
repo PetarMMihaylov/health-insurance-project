@@ -13,9 +13,11 @@ import java.util.UUID;
 @Repository
 public interface ClaimRepository extends JpaRepository<Claim, UUID> {
 
-    List<Claim> findAllByUserAndDeletedFalse(User user);
+    List<Claim> findAllByUserAndDeletedFalseOrderByUpdatedOnDesc(User user);
 
     List<Claim> findAllByClaimStatus(ClaimStatus claimStatus);
 
     List<Claim> findAllByUserAndDeletedFalseAndCreatedOnBetween(User user, LocalDateTime startDate, LocalDateTime endDate);
+
+    List<Claim> findAllByOrderByUpdatedOnDesc();
 }

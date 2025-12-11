@@ -114,7 +114,7 @@ class TransactionServiceUTest {
         Transaction t1 = createDummyTransaction(createDummyUser(UserRole.POLICYHOLDER));
         Transaction t2 = createDummyTransaction(createDummyUser(UserRole.POLICYHOLDER));
 
-        when(transactionRepository.findAll()).thenReturn(List.of(t1, t2));
+        when(transactionRepository.findAllByOrderByUpdatedOnDesc()).thenReturn(List.of(t1, t2));
 
         List<Transaction> result = transactionService.getAllTransactions(admin);
 
@@ -122,8 +122,8 @@ class TransactionServiceUTest {
         assertTrue(result.contains(t1));
         assertTrue(result.contains(t2));
 
-        verify(transactionRepository, times(1)).findAll();
-        verify(transactionRepository, never()).findAllByTransactionOwnerAndDeletedFalse(any());
+        verify(transactionRepository, times(1)).findAllByOrderByUpdatedOnDesc();
+        verify(transactionRepository, never()).findAllByTransactionOwnerAndDeletedFalseOrderByUpdatedOnDesc(any());
     }
 
     @Test
@@ -133,7 +133,7 @@ class TransactionServiceUTest {
         Transaction t1 = createDummyTransaction(user);
         Transaction t2 = createDummyTransaction(user);
 
-        when(transactionRepository.findAllByTransactionOwnerAndDeletedFalse(user))
+        when(transactionRepository.findAllByTransactionOwnerAndDeletedFalseOrderByUpdatedOnDesc(user))
                 .thenReturn(List.of(t1, t2));
 
         List<Transaction> result = transactionService.getAllTransactions(user);
@@ -142,7 +142,7 @@ class TransactionServiceUTest {
         assertTrue(result.contains(t1));
         assertTrue(result.contains(t2));
 
-        verify(transactionRepository, times(1)).findAllByTransactionOwnerAndDeletedFalse(user);
+        verify(transactionRepository, times(1)).findAllByTransactionOwnerAndDeletedFalseOrderByUpdatedOnDesc(user);
         verify(transactionRepository, never()).findAll();
     }
 
@@ -151,15 +151,15 @@ class TransactionServiceUTest {
 
         User admin = createDummyUser(UserRole.ADMIN);
 
-        when(transactionRepository.findAll()).thenReturn(List.of());
+        when(transactionRepository.findAllByOrderByUpdatedOnDesc()).thenReturn(List.of());
 
         List<Transaction> result = transactionService.getAllTransactions(admin);
 
         assertNotNull(result);
         assertTrue(result.isEmpty(), "Expected an empty list when no transactions are found");
 
-        verify(transactionRepository, times(1)).findAll();
-        verify(transactionRepository, never()).findAllByTransactionOwnerAndDeletedFalse(any());
+        verify(transactionRepository, times(1)).findAllByOrderByUpdatedOnDesc();
+        verify(transactionRepository, never()).findAllByTransactionOwnerAndDeletedFalseOrderByUpdatedOnDesc(any());
     }
 
 
@@ -167,14 +167,14 @@ class TransactionServiceUTest {
     void getAllTransactions_nonAdminNoTransactions_returnsEmptyList() {
         User user = createDummyUser(UserRole.POLICYHOLDER);
 
-        when(transactionRepository.findAllByTransactionOwnerAndDeletedFalse(user)).thenReturn(List.of());
+        when(transactionRepository.findAllByTransactionOwnerAndDeletedFalseOrderByUpdatedOnDesc(user)).thenReturn(List.of());
 
         List<Transaction> result = transactionService.getAllTransactions(user);
 
         assertNotNull(result);
         assertTrue(result.isEmpty(), "Expected an empty list when no transactions are found");
 
-        verify(transactionRepository, times(1)).findAllByTransactionOwnerAndDeletedFalse(user);
+        verify(transactionRepository, times(1)).findAllByTransactionOwnerAndDeletedFalseOrderByUpdatedOnDesc(user);
         verify(transactionRepository, never()).findAll();
     }
 

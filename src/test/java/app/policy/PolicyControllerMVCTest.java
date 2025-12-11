@@ -112,7 +112,7 @@ class PolicyControllerMVCTest {
 
         mockMvc.perform(get("/policy/{id}/policy-settings", policy.getId())
                         .with(user(auth)))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isForbidden());
 
         verifyNoInteractions(policyService);
     }
@@ -198,7 +198,7 @@ class PolicyControllerMVCTest {
                         .param("limitForDentalService", "50")
                         .param("policyPrice", "500")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isForbidden());
 
         verifyNoInteractions(policyService);
     }

@@ -145,7 +145,7 @@ class TransactionControllerMVCTest {
     }
 
     @Test
-    void getTransactionInformation_notFound_redirectsWithFlash() throws Exception {
+    void getTransactionInformation_notFound_redirects() throws Exception {
 
         User user = createDummyUser(UserRole.POLICYHOLDER);
         AuthenticationMetadata auth = authenticationMetadata(user);
@@ -207,7 +207,7 @@ class TransactionControllerMVCTest {
         mockMvc.perform(delete("/transactions/{id}/deletion", transactionId)
                         .with(user(auth))
                         .with(csrf()))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isForbidden());
 
         verifyNoInteractions(transactionService);
     }
@@ -223,7 +223,7 @@ class TransactionControllerMVCTest {
         mockMvc.perform(delete("/transactions/{id}/deletion", transactionId)
                         .with(user(auth))
                         .with(csrf()))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isForbidden());
 
         verifyNoInteractions(transactionService);
     }

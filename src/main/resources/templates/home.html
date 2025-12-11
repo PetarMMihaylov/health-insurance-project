@@ -36,7 +36,7 @@
     <div class="profile-info" style="margin-top: 40px; text-align: left; display: inline-block; background: #ffffffee; padding: 25px 35px; border-radius: 20px; box-shadow: 0 12px 25px rgba(0,0,0,0.15);">
 
         <div style="text-align: center; margin-bottom: 20px;">
-            <img th:src="@{${!#strings.isEmpty(user.profilePicture) ? user.profilePicture : '/images/default-profile.png'}}"
+            <img th:src="${!#strings.isEmpty(user.profilePicture) ? user.profilePicture : '/images/default-profile.png'}"
                  alt="Profile Picture"
                  style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc;">
         </div>

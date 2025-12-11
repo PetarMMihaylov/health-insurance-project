@@ -164,12 +164,12 @@ class UserServiceUTest {
         User user = buildTestUser(userId, UserRole.POLICYHOLDER);
 
         List<User> users = List.of(user);
-        when(userRepository.findAll()).thenReturn(users);
+        when(userRepository.findAllByOrderByUpdatedOnDesc()).thenReturn(users);
 
         List<User> result = userService.getAllUsers();
 
         assertEquals(users, result);
-        verify(userRepository, times(1)).findAll();
+        verify(userRepository, times(1)).findAllByOrderByUpdatedOnDesc();
     }
 
     @Test

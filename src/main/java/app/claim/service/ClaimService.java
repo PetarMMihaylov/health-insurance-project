@@ -70,9 +70,9 @@ public class ClaimService {
     public List<Claim> getClaims(User user) {
         List <Claim> allClaims;
         if (user.getRole() == UserRole.ADMIN) {
-            allClaims = claimRepository.findAll();
+            allClaims = claimRepository.findAllByOrderByUpdatedOnDesc();
         } else {
-            allClaims = claimRepository.findAllByUserAndDeletedFalse(user);
+            allClaims = claimRepository.findAllByUserAndDeletedFalseOrderByUpdatedOnDesc(user);
         }
 
         return allClaims;

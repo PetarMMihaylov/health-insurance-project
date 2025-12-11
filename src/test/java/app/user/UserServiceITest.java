@@ -109,7 +109,7 @@ class UserServiceITest {
         User updatedUser = userRepository.findById(user.getId()).get();
         assertEquals(addAmount, updatedUser.getAccountBalance());
 
-        List<Transaction> transactions = transactionRepository.findAllByTransactionOwnerAndDeletedFalse(user);
+        List<Transaction> transactions = transactionRepository.findAllByTransactionOwnerAndDeletedFalseOrderByUpdatedOnDesc(user);
         assertEquals(1, transactions.size());
         Transaction tx = transactions.get(0);
         assertEquals(addAmount, tx.getPaidAmount());
@@ -144,7 +144,7 @@ class UserServiceITest {
         BigDecimal expectedBalance = initialBalance.subtract(luxPolicy.getPolicyPrice());
         assertEquals(expectedBalance, updatedUser.getAccountBalance());
 
-        List<Transaction> transactions = transactionRepository.findAllByTransactionOwnerAndDeletedFalse(user);
+        List<Transaction> transactions = transactionRepository.findAllByTransactionOwnerAndDeletedFalseOrderByUpdatedOnDesc(user);
         assertEquals(1, transactions.size());
         Transaction tx = transactions.get(0);
         assertEquals(luxPolicy.getPolicyPrice(), tx.getPaidAmount());
@@ -173,7 +173,7 @@ class UserServiceITest {
         assertNotEquals(luxPolicy.getId(), updatedUser.getPolicy().getId());
         assertEquals(BigDecimal.ZERO, updatedUser.getAccountBalance());
 
-        List<Transaction> transactions = transactionRepository.findAllByTransactionOwnerAndDeletedFalse(user);
+        List<Transaction> transactions = transactionRepository.findAllByTransactionOwnerAndDeletedFalseOrderByUpdatedOnDesc(user);
         assertEquals(1, transactions.size());
         Transaction tx = transactions.get(0);
         assertEquals(luxPolicy.getPolicyPrice(), tx.getPaidAmount());

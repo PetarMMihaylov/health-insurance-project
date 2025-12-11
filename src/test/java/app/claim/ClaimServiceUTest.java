@@ -171,12 +171,12 @@ class ClaimServiceUTest {
                 buildClaim(policyholder, false)
         );
 
-        when(claimRepository.findAll()).thenReturn(claims);
+        when(claimRepository.findAllByOrderByUpdatedOnDesc()).thenReturn(claims);
 
         List<Claim> result = claimService.getClaims(admin);
 
         assertEquals(2, result.size());
-        verify(claimRepository).findAll();
+        verify(claimRepository).findAllByOrderByUpdatedOnDesc();
     }
 
     @Test
@@ -186,12 +186,12 @@ class ClaimServiceUTest {
 
         List<Claim> claims = List.of(buildClaim(user, false));
 
-        when(claimRepository.findAllByUserAndDeletedFalse(user)).thenReturn(claims);
+        when(claimRepository.findAllByUserAndDeletedFalseOrderByUpdatedOnDesc(user)).thenReturn(claims);
 
         List<Claim> result = claimService.getClaims(user);
 
         assertEquals(1, result.size());
-        verify(claimRepository).findAllByUserAndDeletedFalse(user);
+        verify(claimRepository).findAllByUserAndDeletedFalseOrderByUpdatedOnDesc(user);
     }
 
     @Test
@@ -199,13 +199,13 @@ class ClaimServiceUTest {
 
         User user = buildUser(UserRole.POLICYHOLDER);
 
-        when(claimRepository.findAllByUserAndDeletedFalse(user)).thenReturn(Collections.emptyList());
+        when(claimRepository.findAllByUserAndDeletedFalseOrderByUpdatedOnDesc(user)).thenReturn(Collections.emptyList());
 
         List<Claim> result = claimService.getClaims(user);
 
         assertNotNull(result);
         assertTrue(result.isEmpty());
-        verify(claimRepository).findAllByUserAndDeletedFalse(user);
+        verify(claimRepository).findAllByUserAndDeletedFalseOrderByUpdatedOnDesc(user);
     }
 
     @Test

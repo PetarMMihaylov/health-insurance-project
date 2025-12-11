@@ -49,9 +49,9 @@ public class TransactionService {
 
     public List<Transaction> getAllTransactions(User user) {
         if (user.getRole() == UserRole.ADMIN) {
-            return transactionRepository.findAll();
+            return transactionRepository.findAllByOrderByUpdatedOnDesc();
         } else {
-            return transactionRepository.findAllByTransactionOwnerAndDeletedFalse(user);
+            return transactionRepository.findAllByTransactionOwnerAndDeletedFalseOrderByUpdatedOnDesc(user);
         }
     }
 

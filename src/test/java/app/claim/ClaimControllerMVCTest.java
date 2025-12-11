@@ -245,7 +245,7 @@ class ClaimControllerMVCTest {
 
         User user = createDummyUser(UserRole.POLICYHOLDER);
 
-        mockMvc.perform(delete("/claims/{id}/deletion", UUID.randomUUID()).with(user(auth(user))).with(csrf())).andExpect(status().isInternalServerError());
+        mockMvc.perform(delete("/claims/{id}/deletion", UUID.randomUUID()).with(user(auth(user))).with(csrf())).andExpect(status().isForbidden());
 
         verifyNoInteractions(claimService);
     }

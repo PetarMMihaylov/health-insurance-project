@@ -91,7 +91,7 @@ class UserControllerMVCTest {
 
         mockMvc.perform(get("/users")
                         .with(user(new AuthenticationMetadata(userId, user.getUsername(), user.getPassword(), user.getRole(), user.getPermission(), user.isEmployed()))))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isForbidden());
 
         verify(userService, never()).getAllUsers();
     }
@@ -224,7 +224,7 @@ class UserControllerMVCTest {
         mockMvc.perform(patch("/users/" + userId + "/role")
                         .with(csrf())
                         .with(user(new AuthenticationMetadata(nonAdmin.getId(), nonAdmin.getUsername(), nonAdmin.getPassword(), nonAdmin.getRole(), nonAdmin.getPermission(), nonAdmin.isEmployed()))))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isForbidden());
 
         verify(userService, never()).changeRole(any());
     }
@@ -252,7 +252,7 @@ class UserControllerMVCTest {
         mockMvc.perform(patch("/users/" + userId + "/employment")
                         .with(csrf())
                         .with(user(new AuthenticationMetadata(nonAdmin.getId(), nonAdmin.getUsername(), nonAdmin.getPassword(), nonAdmin.getRole(), nonAdmin.getPermission(), nonAdmin.isEmployed()))))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isForbidden());
 
         verify(userService, never()).changeEmployment(any());
 
