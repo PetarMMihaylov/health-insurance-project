@@ -26,7 +26,6 @@
         <a th:href="@{/claims}" class="btn btn-register">Claims</a>
         <a th:href="@{/transactions}" class="btn btn-register">Transactions</a>
         <a th:href="@{/policy}" class="btn btn-register">Policy</a>
-        <a th:href="@{/reports}" class="btn btn-register">Reports</a>
     </div>
 
     <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}" class="btn-wrapper" style="margin-top: 40px;">
