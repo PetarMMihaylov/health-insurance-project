@@ -2,7 +2,11 @@
 
 ## 📌 Overview
 The Health Insurance Application is a Spring Boot–based web application designed to manage health insurance policies, clients, and claims.  
-It provides secure authentication, policy management, and integrations with an external microservice for a complete insurance workflow.
+It provides secure authentication, policy management and claims management.
+
+Disclaimer: This project was initially created for Spring-Advanced-October 2025 course and has been slightly changed (integration has been removed) to meet requirements for Spring-Fundamentals-June 2026.
+
+You can start the application on localhost:8080
 
 ---
 
@@ -14,8 +18,7 @@ It provides secure authentication, policy management, and integrations with an e
 - **Build Tool:** Maven
 - **Security:** Spring Security 
 - **Other Tools:** Lombok, Spring Boot Actuator, Spring Boot DevTools
-- **API Integration:** Integration with reports-svc microservice
-- **Testing:** Unit, API and integration tests
+- **Testing:** Unit and integration tests
 
 ---
 
@@ -27,7 +30,6 @@ It provides secure authentication, policy management, and integrations with an e
 - Claims processing and validation
 - Automatic scheduled claims evaluation
 - Transaction management (view and delete)
-- Reports management (create, view and delete) via communication with Reports SVC microservice
 - Secure password encryption with Spring Security
 - Caching for performance optimization
 - Health monitoring and metrics via Spring Boot Actuator
@@ -39,12 +41,10 @@ It provides secure authentication, policy management, and integrations with an e
 - **Data Persistence:** Managed via Spring Data JPA
 - **Web Layer:** RESTful APIs and Thymeleaf templates
 - **Security Layer:** Login, session management, and role-based access
-- **Integration Layer:** OpenFeign for external API communication
 
 ---
 
 ## 🔗 Integrations
 - **Databases:** MySQL (main), H2 (in-memory for testing)
-- **External APIs:** Feign clients for third-party services
 - **Spring Ecosystem:** Actuator for monitoring, Validation for input checks
 - **Testing:** JUnit + Spring Boot Starter Test + Spring Security Test
