@@ -39,7 +39,7 @@ You can start the application on localhost:8080
 
 ## ⚙️ Functionalities
 - **Data Persistence:** Managed via Spring Data JPA
-- **Web Layer:** RESTful APIs and Thymeleaf templates
+- **Web Layer:** Thymeleaf templates
 - **Security Layer:** Login, session management, and role-based access
 
 ---
