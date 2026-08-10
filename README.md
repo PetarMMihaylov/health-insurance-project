@@ -14,7 +14,7 @@ It provides secure authentication, policy management, and integrations with an e
 - **Build Tool:** Maven
 - **Security:** Spring Security 
 - **Other Tools:** Lombok, Spring Boot Actuator, Spring Boot DevTools
-- **API Integration:** Integration with reports-svc microservice
+- **API Integration:** Integration with reports-svc microservice - the microservice repo could be found here: https://github.com/PetarMMihaylov/reports-svc
 - **Testing:** Unit, API and integration tests
 
 ---
